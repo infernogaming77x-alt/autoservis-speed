@@ -1,0 +1,15 @@
+# Production-like Postgres. Local MVP uses SQLite (Docker is not required).
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: firmapro
+      POSTGRES_PASSWORD: firmapro
+      POSTGRES_DB: firmapro
+    ports:
+      - "5432:5432"
+    volumes:
+      - firmapro_pg:/var/lib/postgresql/data
+
+volumes:
+  firmapro_pg:

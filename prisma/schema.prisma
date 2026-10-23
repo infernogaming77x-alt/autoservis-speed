@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite locally (no Docker on the machine). Production: PostgreSQL via docker-compose.
+// Do not invent legal identifiers; keep company tax fields optional and free-form.
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  locale       String   @default("sk") // sk | cs
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  memberships Membership[]
+  consents    Consent[]
+  auditLogs   AuditLog[]   @relation("Actor")
+}
+
+model Organization {
+  id          String  @id @default(cuid())
+  name        String
+  country     String // SK | CZ
+  currency    String // EUR | CZK — derived from country, overridable
+  ico         String?
+  dic         String?
+  icDph       String?
+  street      String?
+  city        String?
+  postalCode  String?
+  iban        String?
+  logoPath    String?
+  locale      String  @default("sk")
+  plan        String  @default("free") // free | start | pro — Stripe later
+  trialEndsAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships Membership[]
+  auditLogs   AuditLog[]
+}
+
+model Membership {
+  id             String   @id @default(cuid())
+  userId         String
+  organizationId String
+  role           String // OWNER | ACCOUNTANT | EMPLOYEE
+  createdAt      DateTime @default(now())
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+}
+
+model Consent {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String // privacy | processing | marketing
+  granted   Boolean
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id             String   @id @default(cuid())
+  organizationId String?
+  actorId        String?
+  action         String
+  entity         String
+  entityId       String?
+  metadata       String? // JSON string
+  createdAt      DateTime @default(now())
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  actor        User?         @relation("Actor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt])
+}
