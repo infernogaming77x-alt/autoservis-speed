@@ -352,7 +352,8 @@ const Page = () => {
           </div>
           <div className="text-center md:text-right text-xs font-medium space-y-1">
             <div>Severná 13, Prievidza – Dubina</div>
-            <div>© {new Date().getFullYear()} AUTO - Speed s.r.o. Všetky práva vyhradené.</div>
+            <div>© 2026 AUTO - Speed s.r.o. Všetky práva vyhradené.</div>
+       
           </div>
         </div>
       </footer>
