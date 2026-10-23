@@ -173,11 +173,17 @@ const HISTORY: Step[] = [
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950";
 
+/**
+ * Logo v tmavom ohraničenom puzdre.
+ * Ak máte vlastný (biely) súbor s logom, nahraďte obsah <span> s ikonou a textom
+ * za <Image src="/logo.png" alt="AUTO - Speed s.r.o." width={140} height={36} />
+ * z "next/image" - puzdro okolo zabezpečí, že biela farba nebude kričať.
+ */
 function Logo({ className = "" }: { className?: string }) {
   return (
     <a
       href="#top"
-      aria-label={`${COMPANY} úvod`}
+      aria-label={`${COMPANY} - úvod`}
       className={`group inline-flex items-center gap-2.5 rounded-xl border border-slate-700/80 bg-slate-900 px-2.5 py-2 shadow-inner shadow-black/50 ring-1 ring-inset ring-white/5 transition-colors duration-300 hover:border-blue-500/60 sm:gap-3 sm:px-3 ${focusRing} ${className}`}
     >
       <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-600/30 transition-transform duration-300 group-hover:-rotate-6 motion-reduce:transition-none sm:h-9 sm:w-9">
