@@ -6,7 +6,6 @@ import {
   Clock, 
   ShieldCheck, 
   Car, 
-  Star, 
   Cpu, 
   Gauge, 
   Thermometer, 
@@ -44,14 +43,13 @@ export default function Page() {
       <header className="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           
-          {/* Logo AUTO-SPEED */}
+          {/* Logo AUTO-SPEED s tmavým zladeným pozadím */}
           <div className="flex items-center gap-4 group cursor-pointer">
-            <div className="bg-white p-2.5 rounded-2xl shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-all duration-300 border border-slate-200 flex items-center justify-center">
-              {/* Presné logo Auto-Speed */}
-              <div className="flex flex-col items-center justify-center font-black leading-none tracking-tighter text-slate-900">
-                <span className="text-xl italic text-red-600 font-extrabold tracking-normal">AUTO</span>
-                <div className="w-full h-0.5 bg-blue-600 my-0.5"></div>
-                <span className="text-sm font-black tracking-widest text-blue-900 uppercase">SPEED</span>
+            <div className="bg-slate-950/90 px-3.5 py-2 rounded-2xl shadow-lg border border-slate-800 group-hover:border-blue-500/40 group-hover:scale-105 transition-all duration-300 flex items-center justify-center">
+              <div className="flex flex-col items-center justify-center font-black leading-none tracking-tighter">
+                <span className="text-xl italic text-red-500 font-extrabold tracking-normal drop-shadow-sm">AUTO</span>
+                <div className="w-full h-0.5 bg-blue-500 my-0.5"></div>
+                <span className="text-xs font-black tracking-widest text-slate-100 uppercase">SPEED</span>
               </div>
             </div>
             <div>
@@ -63,11 +61,11 @@ export default function Page() {
           </div>
 
           <a 
-            href="tel:0465427302" 
+            href="tel:0905272052" 
             className="group relative inline-flex items-center gap-2.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300 shadow-lg shadow-blue-600/25 hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0"
           >
             <Phone className="w-4 h-4 animate-bounce" />
-            <span>046 / 542 7302</span>
+            <span>0905 272 052</span>
           </a>
         </div>
       </header>
@@ -93,11 +91,11 @@ export default function Page() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a 
-                href="tel:0465427302" 
+                href="tel:0905272052" 
                 className="group inline-flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-xl font-bold text-base transition-all duration-300 shadow-xl shadow-blue-600/30 hover:shadow-blue-500/50 hover:-translate-y-1"
               >
                 <Phone className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                <span>Objednať sa na servis</span>
+                <span>Zavolať 0905 272 052</span>
               </a>
               <a 
                 href="#o-nas" 
@@ -167,7 +165,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* History / About Us Section - Presne z pôvodnej stránky */}
+      {/* History / About Us Section */}
       <section id="o-nas" className="py-20 px-6 max-w-7xl mx-auto">
         <div className="bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-8 sm:p-12 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl pointer-events-none"></div>
@@ -185,7 +183,7 @@ export default function Page() {
                   Firma <strong>AUTO - Speed s.r.o.</strong> vznikla v roku <strong>2001</strong> v areáli bývalého družstva v Prievidzi. V našich začiatkoch sme vykonávali len menšie mechanické a klampiarske práce.
                 </p>
                 <p>
-                  Neskôr sa naša firma rozšírila o moderný <strong>striekací box a vlastnú lakovňu</strong>. Neustále sa rozvíjame a dopĺňame nové technológie – dnes zákazníkom ponúkame špičkovú počitačovú diagnostiku, elektro rozvody aj kompletné generálne opravy (GO) motorov pre osobné a ľahké úžitkové autá.
+                  Neskôr sa naša firma rozšírila o moderný <strong>striekací box a vlastnú lakovňu</strong>. Neustále sa rozvíjame a dopĺňame nové technológie – dnes zákazníkom ponúkame špičkovú počítačovú diagnostiku, elektro rozvody aj kompletné generálne opravy (GO) motorov pre osobné a ľahké úžitkové autá.
                 </p>
               </div>
             </div>
@@ -195,14 +193,22 @@ export default function Page() {
                 <Award className="w-8 h-8" />
               </div>
               <h3 className="text-xl font-bold text-white">Kontaktná osoba</h3>
-              <p className="text-slate-400 text-sm">Pre všetky otázky a dohodnutie termínu je vám k dispozícii:</p>
+              <p className="text-slate-400 text-sm">Pre dohodnutie termínu a otázky kontaktujte:</p>
               <div className="text-lg font-black text-blue-400">Maroš Mikuš</div>
-              <a 
-                href="tel:0465427302" 
-                className="inline-block bg-slate-800 hover:bg-slate-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl border border-slate-700 transition-colors"
-              >
-                046 / 542 7302
-              </a>
+              <div className="space-y-2 pt-1">
+                <a 
+                  href="tel:0905272052" 
+                  className="block bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-colors shadow-md"
+                >
+                  0905 272 052
+                </a>
+                <a 
+                  href="tel:0465427302" 
+                  className="block bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold px-5 py-2 rounded-xl border border-slate-700 transition-colors"
+                >
+                  Pevná linka: 046 / 542 7302
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -285,15 +291,15 @@ export default function Page() {
           <div className="relative z-10 max-w-2xl">
             <h3 className="text-3xl font-black text-white mb-3">Potrebujete opraviť auto alebo lakovať diel?</h3>
             <p className="text-blue-100 text-base">
-              Neváhajte nás kontaktovať na pevnej linke. Radi vám poradíme a dohodneme najbližší voľný termín.
+              Neváhajte nás kontaktovať na mobil alebo pevnú linku. Radi vám poradíme a dohodneme najbližší voľný termín.
             </p>
           </div>
           <a 
-            href="tel:0465427302" 
+            href="tel:0905272052" 
             className="relative z-10 shrink-0 bg-white hover:bg-slate-100 text-slate-900 font-black px-8 py-4 rounded-xl shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-3"
           >
             <Phone className="w-5 h-5 text-blue-600" />
-            <span>046 / 542 7302</span>
+            <span>0905 272 052</span>
           </a>
         </div>
       </section>
@@ -326,8 +332,8 @@ export default function Page() {
                   <Phone className="w-6 h-6" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-500 font-medium">Pevná linka / Kontakt</div>
-                  <div className="text-base font-bold text-white">046 / 542 7302 (Maroš Mikuš)</div>
+                  <div className="text-xs text-slate-500 font-medium">Mobil / Pevná linka</div>
+                  <div className="text-base font-bold text-white">0905 272 052 / 046 542 7302</div>
                 </div>
               </div>
             </div>
@@ -356,10 +362,10 @@ export default function Page() {
             </div>
 
             <a 
-              href="tel:0465427302" 
+              href="tel:0905272052" 
               className="block w-full text-center bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-lg shadow-blue-600/30"
             >
-              Zavolať do servisu
+              Zavolať na 0905 272 052
             </a>
           </div>
 
