@@ -44,20 +44,14 @@ export default function Page() {
       <header className="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           
-          {/* Logo with Original Image & Styled Fallback */}
-          <div className="flex items-center gap-3.5 group cursor-pointer">
-            <div className="relative bg-white p-2 rounded-xl shadow-lg shadow-blue-600/10 group-hover:scale-105 group-hover:rotate-1 transition-all duration-300 flex items-center justify-center min-w-[50px] min-h-[50px]">
-              <img 
-                src="http://autoservis-prievidza.sk/pic/nadpis.jpg" 
-                alt="AUTO - SPEED s.r.o. Logo" 
-                className="h-9 w-auto object-contain"
-                onError={(e) => {
-                  // Fallback ak sa nepodarí načítať externý obrázok z ich starého servera
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
-              <div className="hidden group-has-[img[style*='display: none']]:flex items-center gap-2 text-slate-900 font-black">
-                <Wrench className="w-6 h-6 text-blue-600" />
+          {/* Logo AUTO-SPEED */}
+          <div className="flex items-center gap-4 group cursor-pointer">
+            <div className="bg-white p-2.5 rounded-2xl shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-all duration-300 border border-slate-200 flex items-center justify-center">
+              {/* Presné logo Auto-Speed */}
+              <div className="flex flex-col items-center justify-center font-black leading-none tracking-tighter text-slate-900">
+                <span className="text-xl italic text-red-600 font-extrabold tracking-normal">AUTO</span>
+                <div className="w-full h-0.5 bg-blue-600 my-0.5"></div>
+                <span className="text-sm font-black tracking-widest text-blue-900 uppercase">SPEED</span>
               </div>
             </div>
             <div>
