@@ -1,715 +1,525 @@
-"use client";
-
-import { useState } from "react";
-import { Barlow_Condensed, Figtree } from "next/font/google";
+/**
+ * AUTO - Speed s.r.o. - celá homepage v jednom súbore.
+ *
+ * Použitie: ulož ako app/page.tsx (Next.js App Router, Tailwind CSS, lucide-react).
+ * Nič iné netreba meniť. Predvolený app/globals.css z create-next-app stačí
+ * (musí obsahovať `@import "tailwindcss";`).
+ */
+import type { Metadata, Viewport } from "next";
+import { Archivo, Source_Sans_3 } from "next/font/google";
 import {
-  ArrowUpRight,
-  Calendar,
-  ClipboardCheck,
-  Clock,
-  Cog,
-  Cpu,
-  Gauge,
-  MapPin,
-  Paintbrush,
   Phone,
-  Snowflake,
-  User,
   Wrench,
-  Zap,
+  Gauge,
+  Droplets,
+  Disc3,
+  Cog,
   CircleDot,
-  type LucideIcon,
+  MapPin,
+  Clock,
+  Navigation,
 } from "lucide-react";
 
-/* -------------------------------------------------------------------------- */
-/*  Fonty                                                                     */
-/* -------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------ */
+/*  Písma, metadáta, doplnkové CSS                                     */
+/* ------------------------------------------------------------------ */
 
-const display = Barlow_Condensed({
+// Nadpisy: Archivo so zúženou šírkou (os wdth) - pripomína nápisy na dielni.
+const archivo = Archivo({
   subsets: ["latin", "latin-ext"],
-  weight: ["500", "600", "700"],
-  variable: "--font-display",
+  axes: ["wdth"],
+  variable: "--font-archivo",
   display: "swap",
 });
 
-const body = Figtree({
+// Text: Source Sans 3 - čitateľný aj na malom displeji, má slovenskú diakritiku.
+const source = Source_Sans_3({
   subsets: ["latin", "latin-ext"],
-  variable: "--font-body",
+  variable: "--font-source",
   display: "swap",
 });
 
-/* -------------------------------------------------------------------------- */
-/*  Údaje firmy                                                               */
-/* -------------------------------------------------------------------------- */
+export const metadata: Metadata = {
+  title: "AUTO - Speed s.r.o. | Autoservis a pneuservis Prievidza - Dubina",
+  description:
+    "Autoservis a pneuservis v Prievidzi - Dubine od roku 2001. Diagnostika, opravy, prezutie pneumatík. Zavolajte: 0905 272 052.",
+};
 
-const COMPANY = "AUTO - Speed s.r.o.";
-const ADDRESS = "Severná 13, Prievidza - Dubina";
-const HOURS = "Po - Pi: 8:00 - 16:30";
-const SINCE = "Tradícia od r. 2001";
+export const viewport: Viewport = {
+  themeColor: "#020617",
+};
 
-const MOBILE = "0905 272 052";
-const MOBILE_HREF = "tel:+421905272052";
-const LANDLINE = "046 / 542 7302";
-const LANDLINE_HREF = "tel:+421465427302";
+const EXTRA_CSS = `
+  html { scroll-behavior: smooth; scroll-padding-top: 7rem; color-scheme: dark; }
+  body { background: #020617; }
+  .font-display { font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif; }
+  .font-body { font-family: var(--font-source), ui-sans-serif, system-ui, sans-serif; }
+  .site :focus-visible { outline: 2px solid #f59e0b; outline-offset: 3px; border-radius: 4px; }
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .site * { transition-duration: 0.01ms !important; }
+  }
+`;
 
-const MAP_HREF =
+/* ------------------------------------------------------------------ */
+/*  Údaje firmy - všetko, čo treba doplniť alebo opraviť, je tu hore   */
+/* ------------------------------------------------------------------ */
+
+const MOBILE = { display: "0905 272 052", href: "tel:0905272052" };
+const LANDLINE = { display: "046 542 7302", href: "tel:0465427302" };
+
+// TODO: doplňte ulicu a číslo, ak ich chcete zobraziť (napr. "Ulica 12, Prievidza - Dubina").
+const ADDRESS = "Prievidza - Dubina";
+const MAP_URL =
   "https://www.google.com/maps/search/?api=1&query=" +
-  encodeURIComponent("Severná 13, Prievidza");
+  encodeURIComponent("AUTO - Speed s.r.o. Prievidza Dubina");
 
-/* -------------------------------------------------------------------------- */
-/*  Obsah                                                                     */
-/* -------------------------------------------------------------------------- */
+// TODO: doplňte skutočné otváracie hodiny, napr. [{ days: "Pondelok - Piatok", time: "7:00 - 16:00" }].
+// Kým je pole prázdne, web hodiny nezobrazuje.
+const HOURS: { days: string; time: string }[] = [];
 
-type Service = {
-  icon: LucideIcon;
-  title: string;
-  text: string;
-};
+const STEPS = [
+  { title: "Zavoláte alebo prídete", text: "Povedzte, čo sa s autom deje. Aj keď to neviete pomenovať." },
+  { title: "Pozrieme sa na auto", text: "Diagnostika a obhliadka, aby sme vedeli, čo je skutočne treba." },
+  { title: "Povieme vám cenu vopred", text: "Čo treba spraviť hneď, čo môže počkať a koľko to bude stáť." },
+  { title: "Opravujeme po vašom súhlase", text: "Nič navyše, čo ste neodsúhlasili." },
+];
 
-const SERVICES: Service[] = [
+const SERVICE_GROUPS = [
   {
-    icon: Paintbrush,
-    title: "Lakovanie & Klampiarske práce",
-    text: "Vlastný striekací box a lakovňa. Opravy karosérie, rovnanie a lakovanie na jednom mieste.",
+    title: "Autoservis",
+    intro: "Mechanické opravy a servis osobných áut.",
+    items: [
+      { icon: Gauge, name: "Diagnostika", text: "Prečítame chybové hlásenia a pozrieme sa aj pod auto. Povieme vám, čo treba spraviť hneď a čo môže počkať." },
+      { icon: Droplets, name: "Olej a filtre", text: "Výmena motorového oleja, olejového, vzduchového a peľového filtra." },
+      { icon: Disc3, name: "Brzdy", text: "Brzdové doštičky, kotúče a brzdová kvapalina." },
+      { icon: Cog, name: "Podvozok a motor", text: "Tlmiče, ramená, ložiská, spojka a ďalšie mechanické opravy." },
+    ],
   },
   {
-    icon: Wrench,
-    title: "Mechanické práce & GO",
-    text: "Bežné mechanické opravy aj generálne opravy (GO) motorov.",
-  },
-  {
-    icon: Zap,
-    title: "Autoelektrika & Diagnostika",
-    text: "Počítačová diagnostika, elektro rozvody a hľadanie porúch v elektrike vozidla.",
-  },
-  {
-    icon: CircleDot,
-    title: "Pneuservis & Geometria",
-    text: "Prezúvanie pneumatík, vyvažovanie a nastavenie geometrie podvozka.",
-  },
-  {
-    icon: Snowflake,
-    title: "Klimatizácie",
-    text: "Kontrola a servis klimatizácie vo vozidle.",
-  },
-  {
-    icon: ClipboardCheck,
-    title: "STK/EK",
-    text: "Technická a emisná kontrola. Auto vám na ňu pripravíme.",
+    title: "Pneuservis",
+    intro: "Všetko okolo kolies a pneumatík.",
+    items: [
+      { icon: CircleDot, name: "Prezutie a vyváženie", text: "Výmena letných a zimných pneumatík, vyváženie kolies." },
+      { icon: Wrench, name: "Oprava defektu", text: "Zalátanie, alebo férovo povieme, že pneumatika už nestojí za opravu." },
+      { icon: Gauge, name: "Kontrola pneumatík", text: "Dezén, tlak a stav bočníc, aby ste vedeli, na čom idete." },
+    ],
   },
 ];
 
-type MiniCard = {
-  icon: LucideIcon;
-  title: string;
-  short: string;
-  detail: string;
-};
-
-const MINI_CARDS: MiniCard[] = [
-  {
-    icon: Paintbrush,
-    title: "Lakovňa",
-    short: "Vlastný striekací box",
-    detail:
-      "Karosárske práce aj lakovanie robíme vo vlastnej lakovni so striekacím boxom, bez posielania auta k iným.",
-  },
-  {
-    icon: Cpu,
-    title: "Diagnostika",
-    short: "Počítačová diagnostika",
-    detail:
-      "Poruchu najprv odčítame počítačom, aby sme opravovali príčinu a nie len následok.",
-  },
-  {
-    icon: Cog,
-    title: "Motory",
-    short: "Generálne opravy (GO)",
-    detail:
-      "Okrem bežných opráv robíme aj generálne opravy motorov.",
-  },
-  {
-    icon: Zap,
-    title: "Elektro",
-    short: "Elektro rozvody",
-    detail:
-      "Opravy elektro rozvodov a autoelektriky, od kabeláže po hľadanie porúch.",
-  },
+// `price` je voliteľné. Ak ho vyplníte (napr. "od 15 €"), zobrazí sa pri riadku.
+const JOBS: { problem: string; work: string; price?: string }[] = [
+  { problem: "Brzdy pískajú alebo auto pri brzdení vibruje", work: "Kontrola a výmena brzdových doštičiek a kotúčov" },
+  { problem: "Svieti kontrolka motora alebo auto zle štartuje", work: "Diagnostika" },
+  { problem: "Auto ťahá do strany alebo bije volant", work: "Kontrola pneumatík, vyváženie kolies a podvozku" },
+  { problem: "Prichádza zima alebo leto", work: "Prezutie a vyváženie kolies" },
+  { problem: "Pneumatika stráca tlak", work: "Oprava defektu" },
+  { problem: "Uplynul interval výmeny oleja", work: "Výmena oleja a filtrov" },
 ];
 
-type Step = {
-  when: string;
-  title: string;
-  text: string;
-};
-
-const HISTORY: Step[] = [
-  {
-    when: "2001",
-    title: "Vznik servisu",
-    text: "Začali sme v areáli bývalého družstva v Prievidzi.",
-  },
-  {
-    when: "Prvé roky",
-    title: "Mechanika a klampiarčina",
-    text: "Robili sme menšie mechanické a klampiarske práce.",
-  },
-  {
-    when: "Neskôr",
-    title: "Vlastná lakovňa",
-    text: "Pribudol vlastný striekací box a lakovňa.",
-  },
-  {
-    when: "Dnes",
-    title: "Kompletný servis",
-    text: "Máme počítačovú diagnostiku, elektro rozvody a generálne opravy (GO) motorov.",
-  },
+const NAV = [
+  { href: "#sluzby", label: "Služby" },
+  { href: "#cennik", label: "Cenník / Práce" },
+  { href: "#o-nas", label: "O nás" },
+  { href: "#kontakt", label: "Kontakt" },
 ];
 
-/* -------------------------------------------------------------------------- */
-/*  Pomocné komponenty                                                        */
-/* -------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------ */
+/*  Časti stránky                                                      */
+/* ------------------------------------------------------------------ */
 
-const focusRing =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950";
-
-/**
- * Logo v tmavom ohraničenom puzdre.
- * Ak máte vlastný (biely) súbor s logom, nahraďte obsah <span> s ikonou a textom
- * za <Image src="/logo.png" alt="AUTO - Speed s.r.o." width={140} height={36} />
- * z "next/image" - puzdro okolo zabezpečí, že biela farba nebude kričať.
- */
-function Logo({ className = "" }: { className?: string }) {
+function Logo() {
   return (
     <a
-      href="#top"
-      aria-label={`${COMPANY} - úvod`}
-      className={`group inline-flex items-center gap-2.5 rounded-xl border border-slate-700/80 bg-slate-900 px-2.5 py-2 shadow-inner shadow-black/50 ring-1 ring-inset ring-white/5 transition-colors duration-300 hover:border-blue-500/60 sm:gap-3 sm:px-3 ${focusRing} ${className}`}
+      href="#"
+      aria-label="AUTO - Speed s.r.o., Autoservis a Pneuservis"
+      className="flex flex-col gap-1 leading-none"
     >
-      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-600/30 transition-transform duration-300 group-hover:-rotate-6 motion-reduce:transition-none sm:h-9 sm:w-9">
-        <Gauge className="h-5 w-5" aria-hidden="true" />
-      </span>
-      <span className="leading-none">
-        <span className="block font-[family-name:var(--font-display)] text-lg font-bold tracking-wide text-slate-50 sm:text-xl">
-          AUTO - SPEED
+      <span className="font-display flex items-baseline gap-2 text-[1.7rem] font-extrabold text-white [font-stretch:75%]">
+        <span className="tracking-tight">AUTO</span>
+        <span
+          aria-hidden
+          className="inline-block h-[0.2em] w-[0.7em] -translate-y-[0.22em] bg-amber-500"
+        />
+        <span className="italic tracking-tight">Speed</span>
+        <span className="font-body text-xs font-normal text-slate-400 [font-stretch:100%]">
+          s.r.o.
         </span>
-        <span className="mt-0.5 block text-[11px] text-slate-400">s.r.o.</span>
       </span>
+      <span className="text-sm text-slate-400">Autoservis &amp; Pneuservis</span>
     </a>
   );
 }
 
-function CallButton({
-  label = MOBILE,
-  className = "",
-  size = "md",
-}: {
-  label?: string;
-  className?: string;
-  size?: "md" | "lg";
-}) {
-  const sizing =
-    size === "lg"
-      ? "px-7 py-4 text-lg gap-3"
-      : "px-4 py-2.5 text-sm gap-2 sm:px-5 sm:text-base";
+function Header() {
   return (
-    <a
-      href={MOBILE_HREF}
-      className={`inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold text-white shadow-lg shadow-blue-600/30 transition duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-600/40 hover:brightness-110 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${sizing} ${focusRing} ${className}`}
-    >
-      <Phone
-        className={size === "lg" ? "h-5 w-5" : "h-4 w-4"}
-        aria-hidden="true"
-      />
-      <span>{label}</span>
-    </a>
+    <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 pb-3 pt-3 sm:px-6">
+        <Logo />
+
+        <nav
+          aria-label="Hlavná navigácia"
+          className="no-scrollbar order-3 -mx-4 flex w-[calc(100%+2rem)] gap-6 overflow-x-auto px-4 text-[0.95rem] md:order-none md:mx-0 md:w-auto md:overflow-visible md:px-0"
+        >
+          {NAV.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="whitespace-nowrap py-1 text-slate-300 transition-colors hover:text-amber-400"
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+
+        <a
+          href={MOBILE.href}
+          className="inline-flex items-center gap-2 rounded-md bg-amber-500 px-4 py-2.5 font-semibold text-slate-950 transition-colors hover:bg-amber-400 active:bg-amber-600"
+        >
+          <Phone className="size-4" aria-hidden />
+          <span>
+            Zavolať<span className="hidden sm:inline">: {MOBILE.display}</span>
+          </span>
+        </a>
+      </div>
+    </header>
   );
 }
 
-function SectionHeading({
-  title,
-  text,
-}: {
-  title: string;
-  text?: string;
-}) {
+function Hero() {
   return (
-    <div className="max-w-2xl">
-      <h2 className="font-[family-name:var(--font-display)] text-4xl font-semibold leading-none tracking-tight text-slate-50 sm:text-5xl">
-        {title}
-      </h2>
-      {text ? (
-        <p className="mt-4 text-base leading-relaxed text-slate-400 sm:text-lg">
-          {text}
+    <section className="mx-auto grid max-w-6xl gap-12 px-4 pb-16 pt-12 sm:px-6 md:pt-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-16 lg:pb-24">
+      <div>
+        <h1 className="font-display max-w-[16ch] text-[2.75rem] font-extrabold leading-[0.98] tracking-tight text-white [font-stretch:75%] sm:text-6xl lg:text-7xl">
+          Poctivý autoservis a pneuservis v Prievidzi
+        </h1>
+        <p className="mt-6 max-w-[52ch] text-lg text-slate-300 sm:text-xl">
+          Opravujeme autá v Dubine už od roku 2001. Žiadne nečakané poplatky,
+          rýchla diagnostika a férový prístup.
         </p>
-      ) : null}
+
+        <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <a
+            href={MOBILE.href}
+            className="inline-flex items-center justify-center gap-3 rounded-md bg-amber-500 px-6 py-4 text-lg font-bold text-slate-950 transition-colors hover:bg-amber-400 active:bg-amber-600"
+          >
+            <Phone className="size-5" aria-hidden />
+            Zavolať: {MOBILE.display}
+          </a>
+          <a
+            href="#sluzby"
+            className="inline-flex items-center justify-center rounded-md border border-slate-700 px-6 py-4 text-lg font-semibold text-slate-100 transition-colors hover:border-slate-500 hover:bg-slate-900"
+          >
+            Pozrieť služby
+          </a>
+        </div>
+        <p className="mt-4 text-slate-400">
+          Pevná linka:{" "}
+          <a
+            href={LANDLINE.href}
+            className="text-slate-200 underline decoration-slate-600 underline-offset-4 hover:decoration-amber-500"
+          >
+            {LANDLINE.display}
+          </a>
+        </p>
+      </div>
+
+      {/* Postup opravy - je to skutočná postupnosť, preto číslovanie */}
+      <aside
+        aria-labelledby="postup"
+        className="rounded-lg border border-slate-800 bg-slate-900/80 p-6 sm:p-8"
+      >
+        <h2
+          id="postup"
+          className="font-display text-2xl font-bold text-white [font-stretch:80%]"
+        >
+          Ako prebieha oprava
+        </h2>
+        <ol className="mt-6">
+          {STEPS.map((step, i) => (
+            <li
+              key={step.title}
+              className="grid grid-cols-[2rem_1fr] gap-x-3 border-t border-dashed border-slate-700 py-4 first:border-t-0 first:pt-0 last:pb-0"
+            >
+              <span className="font-display text-2xl font-bold leading-none text-amber-500 [font-stretch:80%]">
+                {i + 1}
+              </span>
+              <div>
+                <p className="font-semibold text-white">{step.title}</p>
+                <p className="mt-1 text-[0.95rem] text-slate-400">{step.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </aside>
+    </section>
+  );
+}
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="font-display text-4xl font-extrabold tracking-tight text-white [font-stretch:75%] sm:text-5xl">
+      {children}
+    </h2>
+  );
+}
+
+function Services() {
+  return (
+    <section id="sluzby" className="border-t border-slate-800/80 py-16 lg:py-24">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionTitle>Služby</SectionTitle>
+        <p className="mt-4 max-w-[60ch] text-slate-400">
+          Ak sa vaša závada tu nenachádza, aj tak zavolajte. Povieme vám, či sa jej
+          venujeme.
+        </p>
+
+        <div className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+          {SERVICE_GROUPS.map((group) => (
+            <article
+              key={group.title}
+              className="rounded-lg border border-slate-800 bg-slate-900/80 p-6 sm:p-8"
+            >
+              <h3 className="font-display text-3xl font-bold text-white [font-stretch:75%]">
+                {group.title}
+              </h3>
+              <p className="mt-1 text-slate-400">{group.intro}</p>
+              <ul className="mt-6 divide-y divide-slate-800">
+                {group.items.map(({ icon: Icon, name, text }) => (
+                  <li key={name} className="flex gap-4 py-4 first:pt-0 last:pb-0">
+                    <Icon className="mt-1 size-5 shrink-0 text-amber-500" aria-hidden />
+                    <div>
+                      <p className="font-semibold text-white">{name}</p>
+                      <p className="mt-0.5 text-[0.98rem] text-slate-400">{text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Jobs() {
+  return (
+    <section id="cennik" className="border-t border-slate-800/80 py-16 lg:py-24">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionTitle>Cenník / Práce</SectionTitle>
+        <p className="mt-4 max-w-[62ch] text-slate-400">
+          Cena závisí od auta a od rozsahu práce, preto ju nehádame z cenníka na
+          stene. Pred každou opravou vám povieme, koľko bude stáť, a začneme až
+          po vašom súhlase.
+        </p>
+
+        <div className="mt-10 overflow-hidden rounded-lg border border-slate-800 bg-slate-900/80">
+          <div className="hidden grid-cols-2 gap-6 border-b border-slate-800 px-6 py-3 text-sm text-slate-500 md:grid">
+            <span>Čo sa deje s autom</span>
+            <span>Čo spravíme</span>
+          </div>
+          <ul className="divide-y divide-slate-800">
+            {JOBS.map((job) => (
+              <li
+                key={job.problem}
+                className="grid gap-1 px-6 py-5 md:grid-cols-2 md:gap-6"
+              >
+                <p className="font-semibold text-white">{job.problem}</p>
+                <div className="flex items-baseline justify-between gap-4">
+                  <p className="text-slate-300">{job.work}</p>
+                  {job.price && (
+                    <span className="shrink-0 font-semibold text-amber-400">
+                      {job.price}
+                    </span>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <p className="mt-6 text-slate-400">
+          Nenašli ste svoj problém?{" "}
+          <a
+            href={MOBILE.href}
+            className="font-semibold text-amber-400 underline decoration-amber-500/40 underline-offset-4 hover:decoration-amber-400"
+          >
+            Zavolajte na {MOBILE.display}
+          </a>
+          , aj telefonicky vám povieme, čo s tým.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function About() {
+  return (
+    <section id="o-nas" className="border-t border-slate-800/80 py-16 lg:py-24">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <SectionTitle>O nás</SectionTitle>
+        <div className="max-w-[62ch] space-y-5 text-lg">
+          <p>
+            AUTO - Speed s.r.o. opravuje autá v Prievidzi - Dubine od roku 2001.
+            Firmu vedie konateľ Maroš Mikuš.
+          </p>
+          <p>
+            Za štvrťstoročie sme sa naučili, že zákazník si z dielne odnesie dve
+            veci: či auto odišlo v poriadku a či cena sedela s tým, čo mu
+            povedali vopred. Preto sa snažíme, aby platilo obe.
+          </p>
+          <p>
+            Keď nie je treba meniť, nemeníme. Keď sa dá niečo odložiť, povieme
+            vám to. Rozhodnutie je vždy na vás.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Contact() {
+  return (
+    <section id="kontakt" className="border-t border-slate-800/80 py-16 lg:py-24">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionTitle>Kontakt</SectionTitle>
+        <p className="mt-4 max-w-[60ch] text-slate-400">
+          Najrýchlejšie sa dohodneme po telefóne. Zavolajte a povedzte, čo sa
+          s autom deje.
+        </p>
+
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
+          <div className="rounded-lg border border-slate-800 bg-slate-900/80 p-6 sm:p-8">
+            <h3 className="font-display text-2xl font-bold text-white [font-stretch:80%]">
+              Telefón
+            </h3>
+            <div className="mt-5 space-y-5">
+              <a href={MOBILE.href} className="group block">
+                <span className="block text-sm text-slate-400">Mobil</span>
+                <span className="mt-1 inline-flex items-center gap-3 text-3xl font-bold text-white transition-colors group-hover:text-amber-400">
+                  <Phone className="size-6 text-amber-500" aria-hidden />
+                  {MOBILE.display}
+                </span>
+              </a>
+              <a href={LANDLINE.href} className="group block">
+                <span className="block text-sm text-slate-400">Pevná linka</span>
+                <span className="mt-1 inline-flex items-center gap-3 text-3xl font-bold text-white transition-colors group-hover:text-amber-400">
+                  <Phone className="size-6 text-slate-500" aria-hidden />
+                  {LANDLINE.display}
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-slate-800 bg-slate-900/80 p-6 sm:p-8">
+            <h3 className="font-display text-2xl font-bold text-white [font-stretch:80%]">
+              Kde nás nájdete
+            </h3>
+            <p className="mt-1 text-slate-400">AUTO - Speed s.r.o.</p>
+            <p className="mt-5 flex items-start gap-3 text-lg text-white">
+              <MapPin className="mt-1 size-5 shrink-0 text-amber-500" aria-hidden />
+              {ADDRESS}
+            </p>
+            {HOURS.length > 0 ? (
+              <ul className="mt-4 space-y-1">
+                {HOURS.map((h) => (
+                  <li key={h.days} className="flex items-start gap-3">
+                    <Clock className="mt-1 size-5 shrink-0 text-amber-500" aria-hidden />
+                    <span>
+                      <span className="text-white">{h.days}</span>{" "}
+                      <span className="text-slate-400">{h.time}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-4 flex items-start gap-3 text-slate-400">
+                <Clock className="mt-1 size-5 shrink-0 text-slate-500" aria-hidden />
+                Otváracie hodiny vám radi povieme po telefóne.
+              </p>
+            )}
+            <a
+              href={MAP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 rounded-md border border-slate-700 px-4 py-2.5 font-semibold text-slate-100 transition-colors hover:border-slate-500 hover:bg-slate-800"
+            >
+              <Navigation className="size-4" aria-hidden />
+              Otvoriť v mapách
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="border-t border-slate-800 pb-28 pt-8 md:pb-10">
+      <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 text-sm text-slate-500 sm:px-6 md:flex-row md:justify-between">
+        <p>© {new Date().getFullYear()} AUTO - Speed s.r.o., Prievidza - Dubina</p>
+        <p>Autoservis a pneuservis od roku 2001</p>
+      </div>
+    </footer>
+  );
+}
+
+/* Na mobile je tlačidlo na zavolanie stále na dosah palca */
+function MobileCallBar() {
+  return (
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-800 bg-slate-950/95 p-3 backdrop-blur md:hidden">
+      <a
+        href={MOBILE.href}
+        className="flex items-center justify-center gap-3 rounded-md bg-amber-500 py-3.5 text-lg font-bold text-slate-950 active:bg-amber-600"
+      >
+        <Phone className="size-5" aria-hidden />
+        Zavolať: {MOBILE.display}
+      </a>
     </div>
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Stránka                                                                   */
-/* -------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------ */
 
-export default function Page() {
-  const [active, setActive] = useState(0);
-  const ActiveIcon = MINI_CARDS[active].icon;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AutoRepair",
+  name: "AUTO - Speed s.r.o.",
+  telephone: ["+421905272052", "+421465427302"],
+  foundingDate: "2001",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Prievidza",
+    addressRegion: "Trenčiansky kraj",
+    addressCountry: "SK",
+  },
+};
 
+export default function Home() {
   return (
     <div
-      id="top"
-      className={`${display.variable} ${body.variable} relative min-h-screen overflow-x-hidden bg-slate-950 font-[family-name:var(--font-body)] text-slate-300 antialiased selection:bg-blue-600/40 selection:text-white`}
+      lang="sk"
+      className={`site ${archivo.variable} ${source.variable} font-body min-h-screen bg-slate-950 text-[1.0625rem] leading-relaxed text-slate-300 antialiased`}
     >
-      <style>{`
-        @media (prefers-reduced-motion: no-preference) {
-          html { scroll-behavior: smooth; }
-        }
-        @keyframes as-reveal {
-          from { opacity: 0; transform: translateY(16px); }
-          to { opacity: 1; transform: none; }
-        }
-        .as-reveal { animation: as-reveal .8s cubic-bezier(.2,.7,.2,1) both; }
-        .as-d1 { animation-delay: .08s; }
-        .as-d2 { animation-delay: .18s; }
-        .as-d3 { animation-delay: .28s; }
-        .as-d4 { animation-delay: .38s; }
-        @media (prefers-reduced-motion: reduce) {
-          .as-reveal { animation: none; }
-        }
-      `}</style>
-
-      {/* Jemný glow v pozadí */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[900px] overflow-hidden"
-      >
-        <div className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-blue-600/20 blur-[140px]" />
-        <div className="absolute top-40 -right-32 h-[380px] w-[380px] rounded-full bg-indigo-600/15 blur-[120px]" />
-        <div className="absolute top-96 -left-32 h-[320px] w-[320px] rounded-full bg-blue-500/10 blur-[120px]" />
-      </div>
-
-      {/* 1. Horná lišta */}
-      <div className="relative z-10 border-b border-slate-800 bg-slate-900/70 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-6 gap-y-1 px-4 py-2 text-xs text-slate-400 sm:justify-between sm:px-6 sm:text-sm">
-          <span className="inline-flex items-center gap-1.5">
-            <MapPin className="h-3.5 w-3.5 text-blue-400" aria-hidden="true" />
-            {ADDRESS}
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5 text-blue-400" aria-hidden="true" />
-            {HOURS}
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Calendar
-              className="h-3.5 w-3.5 text-blue-400"
-              aria-hidden="true"
-            />
-            {SINCE}
-          </span>
-        </div>
-      </div>
-
-      {/* 2. Hlavička */}
-      <header className="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <Logo />
-          <nav
-            aria-label="Hlavná navigácia"
-            className="hidden items-center gap-1 md:flex"
-          >
-            {[
-              ["O firme", "#o-firme"],
-              ["Služby", "#sluzby"],
-              ["Kontakt", "#kontakt"],
-            ].map(([label, href]) => (
-              <a
-                key={href}
-                href={href}
-                className={`rounded-lg px-3.5 py-2 text-sm font-medium text-slate-300 transition-colors duration-200 hover:bg-slate-800/70 hover:text-white ${focusRing}`}
-              >
-                {label}
-              </a>
-            ))}
-          </nav>
-          <CallButton />
-        </div>
-      </header>
-
-      <main className="relative z-10">
-        {/* 3. Hero */}
-        <section className="mx-auto max-w-6xl px-4 pb-20 pt-14 sm:px-6 sm:pb-28 sm:pt-20">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
-            <div>
-              <p className="as-reveal inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/70 px-3.5 py-1.5 text-sm text-slate-300 backdrop-blur">
-                <span className="h-2 w-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500" />
-                Prievidza - Dubina, od roku 2001
-              </p>
-
-              <h1 className="as-reveal as-d1 mt-6 font-[family-name:var(--font-display)] text-5xl font-bold leading-[0.95] tracking-tight text-slate-50 sm:text-6xl lg:text-7xl">
-                Autoservis v Prievidzi s vlastnou lakovňou
-              </h1>
-
-              <p className="as-reveal as-d2 mt-6 max-w-xl text-base leading-relaxed text-slate-400 sm:text-lg">
-                Mechanika, klampiarčina, elektro, diagnostika aj lakovanie
-                robíme na jednom mieste v Dubine. Zavolajte a dohodnite si
-                termín.
-              </p>
-
-              <div className="as-reveal as-d3 mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <CallButton label={`Zavolať ${MOBILE}`} size="lg" />
-                <a
-                  href="#sluzby"
-                  className={`inline-flex items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-900/60 px-6 py-4 text-base font-medium text-slate-200 backdrop-blur transition duration-300 hover:border-blue-500/60 hover:bg-slate-900 hover:text-white motion-reduce:transition-none ${focusRing}`}
-                >
-                  Pozrieť služby
-                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                </a>
-              </div>
-
-              {/* Rýchle štatistiky */}
-              <dl className="as-reveal as-d4 mt-12 grid max-w-md grid-cols-2 divide-x divide-slate-800 rounded-2xl border border-slate-800 bg-slate-900/70 backdrop-blur">
-                <div className="flex flex-col-reverse justify-end px-5 py-4 sm:px-6">
-                  <dt className="mt-1.5 text-sm text-slate-400">
-                    rokov skúseností
-                  </dt>
-                  <dd className="font-[family-name:var(--font-display)] text-4xl font-bold leading-none text-slate-50 sm:text-5xl">
-                    20+
-                  </dd>
-                </div>
-                <div className="flex flex-col-reverse justify-end px-5 py-4 sm:px-6">
-                  <dt className="mt-1.5 text-sm text-slate-400">lakovňa</dt>
-                  <dd className="flex items-center gap-2 font-[family-name:var(--font-display)] text-2xl font-bold leading-none text-slate-50 sm:text-3xl">
-                    <Paintbrush
-                      className="h-6 w-6 text-blue-400 sm:h-7 sm:w-7"
-                      aria-hidden="true"
-                    />
-                    Vlastná
-                  </dd>
-                </div>
-              </dl>
-            </div>
-
-            {/* Interaktívne mini-karty */}
-            <div className="as-reveal as-d2 relative">
-              <div
-                aria-hidden="true"
-                className="absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-br from-blue-600/20 to-indigo-600/10 blur-2xl"
-              />
-              <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-4 backdrop-blur-xl sm:p-5">
-                <div
-                  role="group"
-                  aria-label="Čo u nás robíme"
-                  className="grid grid-cols-2 gap-3"
-                >
-                  {MINI_CARDS.map((card, i) => {
-                    const Icon = card.icon;
-                    const isActive = i === active;
-                    return (
-                      <button
-                        key={card.title}
-                        type="button"
-                        aria-pressed={isActive}
-                        onMouseEnter={() => setActive(i)}
-                        onFocus={() => setActive(i)}
-                        onClick={() => setActive(i)}
-                        className={`group rounded-2xl border p-4 text-left transition duration-300 motion-reduce:transition-none ${focusRing} ${
-                          isActive
-                            ? "border-blue-500/60 bg-slate-800/80 shadow-lg shadow-blue-600/10"
-                            : "border-slate-800 bg-slate-900 hover:-translate-y-0.5 hover:border-slate-700 motion-reduce:hover:translate-y-0"
-                        }`}
-                      >
-                        <span
-                          className={`grid h-10 w-10 place-items-center rounded-xl transition duration-300 motion-reduce:transition-none ${
-                            isActive
-                              ? "bg-gradient-to-br from-blue-600 to-indigo-600 text-white"
-                              : "bg-slate-800 text-blue-400 group-hover:text-blue-300"
-                          }`}
-                        >
-                          <Icon className="h-5 w-5" aria-hidden="true" />
-                        </span>
-                        <span className="mt-3 block font-[family-name:var(--font-display)] text-xl font-semibold leading-tight text-slate-50">
-                          {card.title}
-                        </span>
-                        <span className="mt-0.5 block text-sm text-slate-400">
-                          {card.short}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <div
-                  aria-live="polite"
-                  className="mt-3 flex gap-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-4 sm:p-5"
-                >
-                  <span className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-slate-800 text-blue-400">
-                    <ActiveIcon className="h-5 w-5" aria-hidden="true" />
-                  </span>
-                  <div>
-                    <p className="font-[family-name:var(--font-display)] text-xl font-semibold text-slate-50">
-                      {MINI_CARDS[active].title}
-                    </p>
-                    <p className="mt-1 text-sm leading-relaxed text-slate-400">
-                      {MINI_CARDS[active].detail}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 4. O firme / História */}
-        <section
-          id="o-firme"
-          className="scroll-mt-24 border-y border-slate-800/80 bg-slate-900/30 py-20 sm:py-28"
-        >
-          <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <SectionHeading
-              title="Rodinná tradícia z Dubiny"
-              text="Servis vznikol v roku 2001 v areáli bývalého družstva v Prievidzi. Odvtedy sme z malej dielne vyrástli na servis, kde auto opravíme, nadiagnostikujeme aj nalakujeme."
-            />
-
-            <div className="mt-14 grid gap-12 lg:grid-cols-[1.3fr_0.7fr] lg:gap-16">
-              <ol className="relative space-y-8 border-l border-slate-800 pl-8">
-                {HISTORY.map((step) => (
-                  <li key={step.when} className="relative">
-                    <span
-                      aria-hidden="true"
-                      className="absolute -left-[2.45rem] top-1.5 h-3 w-3 rounded-full border-2 border-slate-950 bg-gradient-to-br from-blue-500 to-indigo-500 ring-4 ring-slate-900"
-                    />
-                    <p className="text-sm font-medium text-blue-400">
-                      {step.when}
-                    </p>
-                    <h3 className="mt-1 font-[family-name:var(--font-display)] text-2xl font-semibold text-slate-50">
-                      {step.title}
-                    </h3>
-                    <p className="mt-1.5 max-w-lg leading-relaxed text-slate-400">
-                      {step.text}
-                    </p>
-                  </li>
-                ))}
-              </ol>
-
-              {/* Kontaktná osoba */}
-              <aside className="h-fit rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-xl shadow-black/30 sm:p-7">
-                <div className="flex items-center gap-4">
-                  <span className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/30">
-                    <User className="h-7 w-7" aria-hidden="true" />
-                  </span>
-                  <div>
-                    <p className="text-sm text-slate-400">Kontaktná osoba</p>
-                    <p className="font-[family-name:var(--font-display)] text-3xl font-semibold leading-none text-slate-50">
-                      Maroš Mikuš
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-6 space-y-3">
-                  <a
-                    href={MOBILE_HREF}
-                    className={`group flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3 transition-colors duration-200 hover:border-blue-500/60 ${focusRing}`}
-                  >
-                    <span>
-                      <span className="block text-xs text-slate-500">Mobil</span>
-                      <span className="block font-semibold text-slate-100">
-                        {MOBILE}
-                      </span>
-                    </span>
-                    <Phone
-                      className="h-4 w-4 text-blue-400 transition-transform duration-200 group-hover:scale-110"
-                      aria-hidden="true"
-                    />
-                  </a>
-                  <a
-                    href={LANDLINE_HREF}
-                    className={`group flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3 transition-colors duration-200 hover:border-blue-500/60 ${focusRing}`}
-                  >
-                    <span>
-                      <span className="block text-xs text-slate-500">
-                        Pevná linka
-                      </span>
-                      <span className="block font-semibold text-slate-100">
-                        {LANDLINE}
-                      </span>
-                    </span>
-                    <Phone
-                      className="h-4 w-4 text-blue-400 transition-transform duration-200 group-hover:scale-110"
-                      aria-hidden="true"
-                    />
-                  </a>
-                </div>
-              </aside>
-            </div>
-          </div>
-        </section>
-
-        {/* 5. Služby */}
-        <section
-          id="sluzby"
-          className="mx-auto max-w-6xl scroll-mt-24 px-4 py-20 sm:px-6 sm:py-28"
-        >
-          <SectionHeading
-            title="Služby autoservisu"
-            text="Od drobnej opravy po lakovanie celej karosérie. Všetko vybavíte u nás, v Prievidzi."
-          />
-
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map((service) => {
-              const Icon = service.icon;
-              return (
-                <article
-                  key={service.title}
-                  className="group relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 p-6 transition duration-300 hover:-translate-y-1 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-600/10 motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:p-7"
-                >
-                  <div
-                    aria-hidden="true"
-                    className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-blue-600/0 blur-3xl transition-colors duration-500 group-hover:bg-blue-600/25"
-                  />
-                  <span className="relative grid h-12 w-12 place-items-center rounded-xl bg-slate-800 text-blue-400 transition duration-300 group-hover:bg-gradient-to-br group-hover:from-blue-600 group-hover:to-indigo-600 group-hover:text-white motion-reduce:transition-none">
-                    <Icon className="h-6 w-6" aria-hidden="true" />
-                  </span>
-                  <h3 className="relative mt-5 font-[family-name:var(--font-display)] text-2xl font-semibold leading-tight text-slate-50">
-                    {service.title}
-                  </h3>
-                  <p className="relative mt-2 leading-relaxed text-slate-400">
-                    {service.text}
-                  </p>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* 6a. Kontaktný banner */}
-        <section className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="relative overflow-hidden rounded-3xl border border-blue-500/30 bg-gradient-to-r from-blue-600 to-indigo-600 p-8 shadow-2xl shadow-blue-600/20 sm:p-12">
-            <div
-              aria-hidden="true"
-              className="absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/10 blur-3xl"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-slate-950/30 blur-3xl"
-            />
-            <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div className="max-w-xl">
-                <h2 className="font-[family-name:var(--font-display)] text-4xl font-bold leading-none tracking-tight text-white sm:text-5xl">
-                  Treba opraviť alebo nalakovať auto?
-                </h2>
-                <p className="mt-4 text-base leading-relaxed text-blue-50/90 sm:text-lg">
-                  Zavolajte nám v pracovných dňoch od 8:00 do 16:30. Dohodneme
-                  termín.
-                </p>
-              </div>
-              <a
-                href={MOBILE_HREF}
-                className="inline-flex items-center justify-center gap-3 whitespace-nowrap rounded-xl bg-slate-950 px-7 py-4 text-lg font-semibold text-white shadow-xl shadow-slate-950/40 transition duration-300 hover:-translate-y-0.5 hover:bg-slate-900 motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-600"
-              >
-                <Phone className="h-5 w-5" aria-hidden="true" />
-                {MOBILE}
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* 6b. Kontaktná sekcia */}
-        <section
-          id="kontakt"
-          className="mx-auto max-w-6xl scroll-mt-24 px-4 py-20 sm:px-6 sm:py-28"
-        >
-          <SectionHeading
-            title="Kde nás nájdete"
-            text="Servis máme v Prievidzi, v časti Dubina."
-          />
-
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-colors duration-300 hover:border-blue-500/50 sm:p-7">
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-slate-800 text-blue-400">
-                <MapPin className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <h3 className="mt-5 font-[family-name:var(--font-display)] text-2xl font-semibold text-slate-50">
-                Adresa
-              </h3>
-              <address className="mt-2 not-italic leading-relaxed text-slate-400">
-                {COMPANY}
-                <br />
-                Severná 13
-                <br />
-                Prievidza - Dubina
-              </address>
-              <a
-                href={MAP_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`mt-4 inline-flex items-center gap-1.5 rounded-md text-sm font-medium text-blue-400 transition-colors hover:text-blue-300 ${focusRing}`}
-              >
-                Otvoriť v mapách
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-              </a>
-            </div>
-
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-colors duration-300 hover:border-blue-500/50 sm:p-7">
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-slate-800 text-blue-400">
-                <Phone className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <h3 className="mt-5 font-[family-name:var(--font-display)] text-2xl font-semibold text-slate-50">
-                Telefón
-              </h3>
-              <ul className="mt-2 space-y-2">
-                <li>
-                  <a
-                    href={MOBILE_HREF}
-                    className={`block rounded-md text-lg font-semibold text-slate-100 transition-colors hover:text-blue-300 ${focusRing}`}
-                  >
-                    {MOBILE}
-                    <span className="block text-sm font-normal text-slate-500">
-                      Mobil, Maroš Mikuš
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={LANDLINE_HREF}
-                    className={`block rounded-md text-lg font-semibold text-slate-100 transition-colors hover:text-blue-300 ${focusRing}`}
-                  >
-                    {LANDLINE}
-                    <span className="block text-sm font-normal text-slate-500">
-                      Pevná linka
-                    </span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-colors duration-300 hover:border-blue-500/50 sm:p-7">
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-slate-800 text-blue-400">
-                <Clock className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <h3 className="mt-5 font-[family-name:var(--font-display)] text-2xl font-semibold text-slate-50">
-                Otváracie hodiny
-              </h3>
-              <p className="mt-2 text-lg font-semibold text-slate-100">
-                {HOURS}
-              </p>
-              <p className="mt-1 text-sm text-slate-500">{SINCE}</p>
-            </div>
-          </div>
-        </section>
+      <style dangerouslySetInnerHTML={{ __html: EXTRA_CSS }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <Header />
+      <main>
+        <Hero />
+        <Services />
+        <Jobs />
+        <About />
+        <Contact />
       </main>
-
-      {/* Pätička */}
-      <footer className="relative z-10 border-t border-slate-800 bg-slate-900/40 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-4 py-10 sm:px-6 md:flex-row md:items-center">
-          <Logo />
-          <p className="text-sm text-slate-500">
-            {ADDRESS} · {HOURS}
-          </p>
-          <p className="text-sm text-slate-500">
-            © {new Date().getFullYear()} {COMPANY} Všetky práva vyhradené.
-          </p>
-        </div>
-      </footer>
+      <Footer />
+      <MobileCallBar />
     </div>
   );
 }
