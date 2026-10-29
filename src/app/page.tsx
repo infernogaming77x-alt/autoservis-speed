@@ -1,303 +1,525 @@
-import React from 'react';
-import { 
-  Phone, 
-  Wrench, 
-  ShieldCheck, 
-  Clock, 
-  Disc, 
-  Cpu, 
-  ClipboardCheck, 
-  Gauge, 
-  Settings, 
-  Shield, 
-  Award, 
-  MapPin 
-} from 'lucide-react';
+/**
+ * AUTO - Speed s.r.o. - celá homepage v jednom súbore.
+ *
+ * Použitie: ulož ako app/page.tsx (Next.js App Router, Tailwind CSS, lucide-react).
+ * Nič iné netreba meniť. Predvolený app/globals.css z create-next-app stačí
+ * (musí obsahovať `@import "tailwindcss";`).
+ */
+import type { Metadata, Viewport } from "next";
+import { Archivo, Source_Sans_3 } from "next/font/google";
+import {
+  Phone,
+  Wrench,
+  Gauge,
+  Droplets,
+  Disc3,
+  Cog,
+  CircleDot,
+  MapPin,
+  Clock,
+  Navigation,
+} from "lucide-react";
 
-const services = [
-  {
-    icon: <Wrench className="w-6 h-6 text-blue-600" />,
-    title: "Mechanické opravy",
-    description: "Kompletné opravy motorov, podvozkov, bŕzd, výmena rozvodov a výfukových systémov pre všetky značky áut."
-  },
-  {
-    icon: <Disc className="w-6 h-6 text-blue-600" />,
-    title: "Pneuservis & Geometria",
-    description: "Sezónne prezúvanie pneumatík, vyvažovanie kolies, oprava defektov a 3D nastavovanie geometrie náprav."
-  },
-  {
-    icon: <Cpu className="w-6 h-6 text-blue-600" />,
-    title: "Profesionálna autodiagnostika",
-    description: "Hĺbkové čítanie a mazanie chýb riadiacich jednotiek, diagnostika motora, DPF filtrov a elektroniky."
-  },
-  {
-    icon: <ClipboardCheck className="w-6 h-6 text-blue-600" />,
-    title: "Príprava a vykonanie STK & EK",
-    description: "Kompletná predkontrola vozidla pred technickou a emisnou kontrolou, vrátane vybavenia všetkých úkonov za vás."
-  },
-  {
-    icon: <Gauge className="w-6 h-6 text-blue-600" />,
-    title: "Servis klimatizácie",
-    description: "Plnenie, čistenie, dezinfekcia okruhu klimatizácie a detekcia únikov chladiva modernou metódou."
-  },
-  {
-    icon: <Settings className="w-6 h-6 text-blue-600" />,
-    title: "Pravidelné prehliadky",
-    description: "Výmena olejov, filtrov a prevádzkových kvapalín podľa predpisov výrobcu so zachovaním záruky vozidla."
+/* ------------------------------------------------------------------ */
+/*  Písma, metadáta, doplnkové CSS                                     */
+/* ------------------------------------------------------------------ */
+
+// Nadpisy: Archivo so zúženou šírkou (os wdth) - pripomína nápisy na dielni.
+const archivo = Archivo({
+  subsets: ["latin", "latin-ext"],
+  axes: ["wdth"],
+  variable: "--font-archivo",
+  display: "swap",
+});
+
+// Text: Source Sans 3 - čitateľný aj na malom displeji, má slovenskú diakritiku.
+const source = Source_Sans_3({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-source",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "AUTO - Speed s.r.o. | Autoservis a pneuservis Prievidza - Dubina",
+  description:
+    "Autoservis a pneuservis v Prievidzi - Dubine od roku 2001. Diagnostika, opravy, prezutie pneumatík. Zavolajte: 0905 272 052.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#020617",
+};
+
+const EXTRA_CSS = `
+  html { scroll-behavior: smooth; scroll-padding-top: 7rem; color-scheme: dark; }
+  body { background: #020617; }
+  .font-display { font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif; }
+  .font-body { font-family: var(--font-source), ui-sans-serif, system-ui, sans-serif; }
+  .site :focus-visible { outline: 2px solid #f59e0b; outline-offset: 3px; border-radius: 4px; }
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .site * { transition-duration: 0.01ms !important; }
   }
+`;
+
+/* ------------------------------------------------------------------ */
+/*  Údaje firmy - všetko, čo treba doplniť alebo opraviť, je tu hore   */
+/* ------------------------------------------------------------------ */
+
+const MOBILE = { display: "0905 272 052", href: "tel:0905272052" };
+const LANDLINE = { display: "046 542 7302", href: "tel:0465427302" };
+
+// TODO: doplňte ulicu a číslo, ak ich chcete zobraziť (napr. "Ulica 12, Prievidza - Dubina").
+const ADDRESS = "Prievidza - Dubina";
+const MAP_URL =
+  "https://www.google.com/maps/search/?api=1&query=" +
+  encodeURIComponent("AUTO - Speed s.r.o. Prievidza Dubina");
+
+// TODO: doplňte skutočné otváracie hodiny, napr. [{ days: "Pondelok - Piatok", time: "7:00 - 16:00" }].
+// Kým je pole prázdne, web hodiny nezobrazuje.
+const HOURS: { days: string; time: string }[] = [];
+
+const STEPS = [
+  { title: "Zavoláte alebo prídete", text: "Povedzte, čo sa s autom deje. Aj keď to neviete pomenovať." },
+  { title: "Pozrieme sa na auto", text: "Diagnostika a obhliadka, aby sme vedeli, čo je skutočne treba." },
+  { title: "Povieme vám cenu vopred", text: "Čo treba spraviť hneď, čo môže počkať a koľko to bude stáť." },
+  { title: "Opravujeme po vašom súhlase", text: "Nič navyše, čo ste neodsúhlasili." },
 ];
+
+const SERVICE_GROUPS = [
+  {
+    title: "Autoservis",
+    intro: "Mechanické opravy a servis osobných áut.",
+    items: [
+      { icon: Gauge, name: "Diagnostika", text: "Prečítame chybové hlásenia a pozrieme sa aj pod auto. Povieme vám, čo treba spraviť hneď a čo môže počkať." },
+      { icon: Droplets, name: "Olej a filtre", text: "Výmena motorového oleja, olejového, vzduchového a peľového filtra." },
+      { icon: Disc3, name: "Brzdy", text: "Brzdové doštičky, kotúče a brzdová kvapalina." },
+      { icon: Cog, name: "Podvozok a motor", text: "Tlmiče, ramená, ložiská, spojka a ďalšie mechanické opravy." },
+    ],
+  },
+  {
+    title: "Pneuservis",
+    intro: "Všetko okolo kolies a pneumatík.",
+    items: [
+      { icon: CircleDot, name: "Prezutie a vyváženie", text: "Výmena letných a zimných pneumatík, vyváženie kolies." },
+      { icon: Wrench, name: "Oprava defektu", text: "Zalátanie, alebo férovo povieme, že pneumatika už nestojí za opravu." },
+      { icon: Gauge, name: "Kontrola pneumatík", text: "Dezén, tlak a stav bočníc, aby ste vedeli, na čom idete." },
+    ],
+  },
+];
+
+// `price` je voliteľné. Ak ho vyplníte (napr. "od 15 €"), zobrazí sa pri riadku.
+const JOBS: { problem: string; work: string; price?: string }[] = [
+  { problem: "Brzdy pískajú alebo auto pri brzdení vibruje", work: "Kontrola a výmena brzdových doštičiek a kotúčov" },
+  { problem: "Svieti kontrolka motora alebo auto zle štartuje", work: "Diagnostika" },
+  { problem: "Auto ťahá do strany alebo bije volant", work: "Kontrola pneumatík, vyváženie kolies a podvozku" },
+  { problem: "Prichádza zima alebo leto", work: "Prezutie a vyváženie kolies" },
+  { problem: "Pneumatika stráca tlak", work: "Oprava defektu" },
+  { problem: "Uplynul interval výmeny oleja", work: "Výmena oleja a filtrov" },
+];
+
+const NAV = [
+  { href: "#sluzby", label: "Služby" },
+  { href: "#cennik", label: "Cenník / Práce" },
+  { href: "#o-nas", label: "O nás" },
+  { href: "#kontakt", label: "Kontakt" },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Časti stránky                                                      */
+/* ------------------------------------------------------------------ */
+
+function Logo() {
+  return (
+    <a
+      href="#"
+      aria-label="AUTO - Speed s.r.o., Autoservis a Pneuservis"
+      className="flex flex-col gap-1 leading-none"
+    >
+      <span className="font-display flex items-baseline gap-2 text-[1.7rem] font-extrabold text-white [font-stretch:75%]">
+        <span className="tracking-tight">AUTO</span>
+        <span
+          aria-hidden
+          className="inline-block h-[0.2em] w-[0.7em] -translate-y-[0.22em] bg-amber-500"
+        />
+        <span className="italic tracking-tight">Speed</span>
+        <span className="font-body text-xs font-normal text-slate-400 [font-stretch:100%]">
+          s.r.o.
+        </span>
+      </span>
+      <span className="text-sm text-slate-400">Autoservis &amp; Pneuservis</span>
+    </a>
+  );
+}
+
+function Header() {
+  return (
+    <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 pb-3 pt-3 sm:px-6">
+        <Logo />
+
+        <nav
+          aria-label="Hlavná navigácia"
+          className="no-scrollbar order-3 -mx-4 flex w-[calc(100%+2rem)] gap-6 overflow-x-auto px-4 text-[0.95rem] md:order-none md:mx-0 md:w-auto md:overflow-visible md:px-0"
+        >
+          {NAV.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="whitespace-nowrap py-1 text-slate-300 transition-colors hover:text-amber-400"
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+
+        <a
+          href={MOBILE.href}
+          className="inline-flex items-center gap-2 rounded-md bg-amber-500 px-4 py-2.5 font-semibold text-slate-950 transition-colors hover:bg-amber-400 active:bg-amber-600"
+        >
+          <Phone className="size-4" aria-hidden />
+          <span>
+            Zavolať<span className="hidden sm:inline">: {MOBILE.display}</span>
+          </span>
+        </a>
+      </div>
+    </header>
+  );
+}
+
+function Hero() {
+  return (
+    <section className="mx-auto grid max-w-6xl gap-12 px-4 pb-16 pt-12 sm:px-6 md:pt-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-16 lg:pb-24">
+      <div>
+        <h1 className="font-display max-w-[16ch] text-[2.75rem] font-extrabold leading-[0.98] tracking-tight text-white [font-stretch:75%] sm:text-6xl lg:text-7xl">
+          Poctivý autoservis a pneuservis v Prievidzi
+        </h1>
+        <p className="mt-6 max-w-[52ch] text-lg text-slate-300 sm:text-xl">
+          Opravujeme autá v Dubine už od roku 2001. Žiadne nečakané poplatky,
+          rýchla diagnostika a férový prístup.
+        </p>
+
+        <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <a
+            href={MOBILE.href}
+            className="inline-flex items-center justify-center gap-3 rounded-md bg-amber-500 px-6 py-4 text-lg font-bold text-slate-950 transition-colors hover:bg-amber-400 active:bg-amber-600"
+          >
+            <Phone className="size-5" aria-hidden />
+            Zavolať: {MOBILE.display}
+          </a>
+          <a
+            href="#sluzby"
+            className="inline-flex items-center justify-center rounded-md border border-slate-700 px-6 py-4 text-lg font-semibold text-slate-100 transition-colors hover:border-slate-500 hover:bg-slate-900"
+          >
+            Pozrieť služby
+          </a>
+        </div>
+        <p className="mt-4 text-slate-400">
+          Pevná linka:{" "}
+          <a
+            href={LANDLINE.href}
+            className="text-slate-200 underline decoration-slate-600 underline-offset-4 hover:decoration-amber-500"
+          >
+            {LANDLINE.display}
+          </a>
+        </p>
+      </div>
+
+      {/* Postup opravy - je to skutočná postupnosť, preto číslovanie */}
+      <aside
+        aria-labelledby="postup"
+        className="rounded-lg border border-slate-800 bg-slate-900/80 p-6 sm:p-8"
+      >
+        <h2
+          id="postup"
+          className="font-display text-2xl font-bold text-white [font-stretch:80%]"
+        >
+          Ako prebieha oprava
+        </h2>
+        <ol className="mt-6">
+          {STEPS.map((step, i) => (
+            <li
+              key={step.title}
+              className="grid grid-cols-[2rem_1fr] gap-x-3 border-t border-dashed border-slate-700 py-4 first:border-t-0 first:pt-0 last:pb-0"
+            >
+              <span className="font-display text-2xl font-bold leading-none text-amber-500 [font-stretch:80%]">
+                {i + 1}
+              </span>
+              <div>
+                <p className="font-semibold text-white">{step.title}</p>
+                <p className="mt-1 text-[0.95rem] text-slate-400">{step.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </aside>
+    </section>
+  );
+}
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="font-display text-4xl font-extrabold tracking-tight text-white [font-stretch:75%] sm:text-5xl">
+      {children}
+    </h2>
+  );
+}
+
+function Services() {
+  return (
+    <section id="sluzby" className="border-t border-slate-800/80 py-16 lg:py-24">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionTitle>Služby</SectionTitle>
+        <p className="mt-4 max-w-[60ch] text-slate-400">
+          Ak sa vaša závada tu nenachádza, aj tak zavolajte. Povieme vám, či sa jej
+          venujeme.
+        </p>
+
+        <div className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+          {SERVICE_GROUPS.map((group) => (
+            <article
+              key={group.title}
+              className="rounded-lg border border-slate-800 bg-slate-900/80 p-6 sm:p-8"
+            >
+              <h3 className="font-display text-3xl font-bold text-white [font-stretch:75%]">
+                {group.title}
+              </h3>
+              <p className="mt-1 text-slate-400">{group.intro}</p>
+              <ul className="mt-6 divide-y divide-slate-800">
+                {group.items.map(({ icon: Icon, name, text }) => (
+                  <li key={name} className="flex gap-4 py-4 first:pt-0 last:pb-0">
+                    <Icon className="mt-1 size-5 shrink-0 text-amber-500" aria-hidden />
+                    <div>
+                      <p className="font-semibold text-white">{name}</p>
+                      <p className="mt-0.5 text-[0.98rem] text-slate-400">{text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Jobs() {
+  return (
+    <section id="cennik" className="border-t border-slate-800/80 py-16 lg:py-24">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionTitle>Cenník / Práce</SectionTitle>
+        <p className="mt-4 max-w-[62ch] text-slate-400">
+          Cena závisí od auta a od rozsahu práce, preto ju nehádame z cenníka na
+          stene. Pred každou opravou vám povieme, koľko bude stáť, a začneme až
+          po vašom súhlase.
+        </p>
+
+        <div className="mt-10 overflow-hidden rounded-lg border border-slate-800 bg-slate-900/80">
+          <div className="hidden grid-cols-2 gap-6 border-b border-slate-800 px-6 py-3 text-sm text-slate-500 md:grid">
+            <span>Čo sa deje s autom</span>
+            <span>Čo spravíme</span>
+          </div>
+          <ul className="divide-y divide-slate-800">
+            {JOBS.map((job) => (
+              <li
+                key={job.problem}
+                className="grid gap-1 px-6 py-5 md:grid-cols-2 md:gap-6"
+              >
+                <p className="font-semibold text-white">{job.problem}</p>
+                <div className="flex items-baseline justify-between gap-4">
+                  <p className="text-slate-300">{job.work}</p>
+                  {job.price && (
+                    <span className="shrink-0 font-semibold text-amber-400">
+                      {job.price}
+                    </span>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <p className="mt-6 text-slate-400">
+          Nenašli ste svoj problém?{" "}
+          <a
+            href={MOBILE.href}
+            className="font-semibold text-amber-400 underline decoration-amber-500/40 underline-offset-4 hover:decoration-amber-400"
+          >
+            Zavolajte na {MOBILE.display}
+          </a>
+          , aj telefonicky vám povieme, čo s tým.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function About() {
+  return (
+    <section id="o-nas" className="border-t border-slate-800/80 py-16 lg:py-24">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <SectionTitle>O nás</SectionTitle>
+        <div className="max-w-[62ch] space-y-5 text-lg">
+          <p>
+            AUTO - Speed s.r.o. opravuje autá v Prievidzi - Dubine od roku 2001.
+            Firmu vedie konateľ Maroš Mikuš.
+          </p>
+          <p>
+            Za štvrťstoročie sme sa naučili, že zákazník si z dielne odnesie dve
+            veci: či auto odišlo v poriadku a či cena sedela s tým, čo mu
+            povedali vopred. Preto sa snažíme, aby platilo obe.
+          </p>
+          <p>
+            Keď nie je treba meniť, nemeníme. Keď sa dá niečo odložiť, povieme
+            vám to. Rozhodnutie je vždy na vás.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Contact() {
+  return (
+    <section id="kontakt" className="border-t border-slate-800/80 py-16 lg:py-24">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionTitle>Kontakt</SectionTitle>
+        <p className="mt-4 max-w-[60ch] text-slate-400">
+          Najrýchlejšie sa dohodneme po telefóne. Zavolajte a povedzte, čo sa
+          s autom deje.
+        </p>
+
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
+          <div className="rounded-lg border border-slate-800 bg-slate-900/80 p-6 sm:p-8">
+            <h3 className="font-display text-2xl font-bold text-white [font-stretch:80%]">
+              Telefón
+            </h3>
+            <div className="mt-5 space-y-5">
+              <a href={MOBILE.href} className="group block">
+                <span className="block text-sm text-slate-400">Mobil</span>
+                <span className="mt-1 inline-flex items-center gap-3 text-3xl font-bold text-white transition-colors group-hover:text-amber-400">
+                  <Phone className="size-6 text-amber-500" aria-hidden />
+                  {MOBILE.display}
+                </span>
+              </a>
+              <a href={LANDLINE.href} className="group block">
+                <span className="block text-sm text-slate-400">Pevná linka</span>
+                <span className="mt-1 inline-flex items-center gap-3 text-3xl font-bold text-white transition-colors group-hover:text-amber-400">
+                  <Phone className="size-6 text-slate-500" aria-hidden />
+                  {LANDLINE.display}
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-slate-800 bg-slate-900/80 p-6 sm:p-8">
+            <h3 className="font-display text-2xl font-bold text-white [font-stretch:80%]">
+              Kde nás nájdete
+            </h3>
+            <p className="mt-1 text-slate-400">AUTO - Speed s.r.o.</p>
+            <p className="mt-5 flex items-start gap-3 text-lg text-white">
+              <MapPin className="mt-1 size-5 shrink-0 text-amber-500" aria-hidden />
+              {ADDRESS}
+            </p>
+            {HOURS.length > 0 ? (
+              <ul className="mt-4 space-y-1">
+                {HOURS.map((h) => (
+                  <li key={h.days} className="flex items-start gap-3">
+                    <Clock className="mt-1 size-5 shrink-0 text-amber-500" aria-hidden />
+                    <span>
+                      <span className="text-white">{h.days}</span>{" "}
+                      <span className="text-slate-400">{h.time}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-4 flex items-start gap-3 text-slate-400">
+                <Clock className="mt-1 size-5 shrink-0 text-slate-500" aria-hidden />
+                Otváracie hodiny vám radi povieme po telefóne.
+              </p>
+            )}
+            <a
+              href={MAP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 rounded-md border border-slate-700 px-4 py-2.5 font-semibold text-slate-100 transition-colors hover:border-slate-500 hover:bg-slate-800"
+            >
+              <Navigation className="size-4" aria-hidden />
+              Otvoriť v mapách
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="border-t border-slate-800 pb-28 pt-8 md:pb-10">
+      <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 text-sm text-slate-500 sm:px-6 md:flex-row md:justify-between">
+        <p>© {new Date().getFullYear()} AUTO - Speed s.r.o., Prievidza - Dubina</p>
+        <p>Autoservis a pneuservis od roku 2001</p>
+      </div>
+    </footer>
+  );
+}
+
+/* Na mobile je tlačidlo na zavolanie stále na dosah palca */
+function MobileCallBar() {
+  return (
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-800 bg-slate-950/95 p-3 backdrop-blur md:hidden">
+      <a
+        href={MOBILE.href}
+        className="flex items-center justify-center gap-3 rounded-md bg-amber-500 py-3.5 text-lg font-bold text-slate-950 active:bg-amber-600"
+      >
+        <Phone className="size-5" aria-hidden />
+        Zavolať: {MOBILE.display}
+      </a>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AutoRepair",
+  name: "AUTO - Speed s.r.o.",
+  telephone: ["+421905272052", "+421465427302"],
+  foundingDate: "2001",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Prievidza",
+    addressRegion: "Trenčiansky kraj",
+    addressCountry: "SK",
+  },
+};
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900 selection:bg-blue-600 selection:text-white font-sans">
-      
-      {/* 1. HERO SECTION */}
-      <section className="relative bg-white text-slate-900 min-h-[90vh] flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8 border-b border-slate-200">
-        {/* Jemný svetlý mriežkový vzor na pozadí */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-70" />
-
-        <div className="relative max-w-7xl mx-auto w-full py-16 lg:py-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* Ľavá strana: Nadpis a akcie */}
-          <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
-            
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-medium shadow-sm">
-              <ShieldCheck className="w-4 h-4 text-blue-600" />
-              <span>Poctivý autoservis v Prievidzi – Dubine od roku 2001</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-slate-900">
-              Kompletná starostlivosť o vaše vozidlo <span className="text-blue-600">bez kompromisov</span>
-            </h1>
-
-            <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto lg:mx-0">
-              Profesionálny autoservis a pneuservis pod vedením Maroša Mikuša. Rýchla diagnostika, spoľahlivé opravy a férové jednanie pre každé auto.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-              <a
-                href="tel:+421905272052"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl shadow-lg shadow-blue-600/20 transition-all transform hover:-translate-y-0.5"
-              >
-                <Phone className="w-5 h-5" />
-                <span>Zavolať ihneď: 0905 272 052</span>
-              </a>
-
-              <a
-                href="#sluzby"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-semibold px-8 py-4 rounded-xl transition-all shadow-sm"
-              >
-                <Wrench className="w-5 h-5 text-blue-600" />
-                <span>Naše služby</span>
-              </a>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 pt-8 border-t border-slate-200 text-left">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-blue-50 border border-blue-100 text-blue-600">
-                  <Clock className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-500">Otvorené</p>
-                  <p className="text-sm font-semibold text-slate-800">Po - Pi: 8:00 - 16:00</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-blue-50 border border-blue-100 text-blue-600">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-500">Záruka</p>
-                  <p className="text-sm font-semibold text-slate-800">Na všetky práce</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Pravá strana: Rýchla info karta */}
-          <div className="lg:col-span-5 flex justify-center">
-            <div className="relative w-full max-w-md bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xl shadow-slate-200/50 overflow-hidden">
-              <div className="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
-              
-              <h3 className="text-xl font-bold text-slate-900 mb-4">AUTO - Speed s.r.o.</h3>
-              <p className="text-slate-600 text-sm mb-6">
-                Nájdete nás v Prievidzi – Dubine. Poskytujeme kompletný servis osobných motorových vozidiel s dôrazom na kvalitu a rýchlosť.
-              </p>
-
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
-                  <span className="text-sm text-slate-700 font-medium">Pneuservis & Geometria</span>
-                  <span className="text-xs font-semibold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">Dostupné</span>
-                </div>
-                <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
-                  <span className="text-sm text-slate-700 font-medium">Autodiagnostika</span>
-                  <span className="text-xs font-semibold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">Profi</span>
-                </div>
-                <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
-                  <span className="text-sm text-slate-700 font-medium">Mechanické opravy</span>
-                  <span className="text-xs font-semibold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">Expresne</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 2. SERVICES SECTION */}
-      <section id="sluzby" className="py-24 bg-slate-100 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-3">Naše odborné služby</h2>
-            <p className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-              Komplexná starostlivosť pod jednou strechou
-            </p>
-            <p className="mt-4 text-slate-600 text-lg">
-              V autoservise AUTO - Speed s.r.o. v Prievidzi – Dubine používame profesionálne vybavenie a rokmi overené postupy.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <div 
-                key={index}
-                className="bg-white border border-slate-200 rounded-2xl p-8 transition-all hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/5 group"
-              >
-                <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-sm">
-                  {service.icon}
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{service.title}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">{service.description}</p>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* 3. ABOUT SECTION */}
-      <section id="o-nas" className="py-24 bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            <div className="lg:col-span-6 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-medium">
-                <Award className="w-4 h-4 text-blue-600" />
-                <span>Tradícia a skúsenosti</span>
-              </div>
-              
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-                Spoľahlivý partner pre vaše auto <span className="text-blue-600">už od roku 2001</span>
-              </h2>
-              
-              <p className="text-slate-600 leading-relaxed">
-                Autoservis <strong className="text-slate-900">AUTO - Speed s.r.o.</strong> v Prievidzi – Dubine pod vedením <strong className="text-slate-900">Maroša Mikuša</strong> poskytuje dlhé roky poctivé a komplexné služby pre všetky značky osobných vozidiel. 
-              </p>
-              
-              <p className="text-slate-500 text-sm leading-relaxed">
-                Našim cieľom je vždy rýchla diagnostika, férové ceny a maximálna bezpečnosť na cestách. Využívame moderné vybavenie a dlhoročné skúsenosti v odbore.
-              </p>
-
-              <div className="grid grid-cols-2 gap-6 pt-4">
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 shadow-sm">
-                  <p className="text-3xl font-extrabold text-blue-600 mb-1">20+</p>
-                  <p className="text-xs text-slate-500">Rokov skúseností v regióne</p>
-                </div>
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 shadow-sm">
-                  <p className="text-3xl font-extrabold text-blue-600 mb-1">100%</p>
-                  <p className="text-xs text-slate-500">Dôraz na kvalitu a férovosť</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-3 shadow-sm">
-                <div className="w-10 h-10 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
-                  <Shield className="w-5 h-5" />
-                </div>
-                <h3 className="font-bold text-lg text-slate-900">Záruka na práce</h3>
-                <p className="text-xs text-slate-600">Na všetky vykonané opravy a vymenené diely poskytujeme jasnú záruku.</p>
-              </div>
-
-              <div className="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-3 sm:translate-y-6 shadow-sm">
-                <div className="w-10 h-10 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
-                  <Wrench className="w-5 h-5" />
-                </div>
-                <h3 className="font-bold text-lg text-slate-900">Moderné vybavenie</h3>
-                <p className="text-xs text-slate-600">Pravidelne aktualizovaná diagnostika a profesionálne náradie pre vaše vozidlo.</p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* 4. CONTACT SECTION */}
-      <section id="kontakt" className="py-24 bg-slate-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-blue-400 font-semibold text-sm uppercase tracking-wider mb-3">Kontaktujte nás</h2>
-            <p className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-              Kde nás nájdete a ako sa spojíme
-            </p>
-            <p className="mt-4 text-slate-300 text-lg">
-              Máte problém s autom alebo sa chcete objednať na servis či prezutie? Zavolajte nám alebo príďte do prevádzky v Dubine.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-            
-            <div className="bg-slate-800/80 border border-slate-700 p-8 rounded-2xl flex flex-col items-center text-center shadow-lg">
-              <div className="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-6">
-                <MapPin className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold mb-2 text-white">Adresa prevádzky</h3>
-              <p className="text-slate-300 text-sm">
-                AUTO - Speed s.r.o.<br />
-                Prievidza – Dubina<br />
-                Slovensko
-              </p>
-            </div>
-
-            <div className="bg-slate-800/80 border border-slate-700 p-8 rounded-2xl flex flex-col items-center text-center shadow-lg">
-              <div className="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-6">
-                <Phone className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold mb-2 text-white">Telefónny kontakt</h3>
-              <p className="text-slate-300 text-sm mb-4">Neváhajte nás kontaktovať počas pracovnej doby.</p>
-              <a 
-                href="tel:+421905272052" 
-                className="text-blue-400 hover:text-blue-300 font-semibold text-lg transition-colors"
-              >
-                0905 272 052
-              </a>
-            </div>
-
-            <div className="bg-slate-800/80 border border-slate-700 p-8 rounded-2xl flex flex-col items-center text-center shadow-lg">
-              <div className="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-6">
-                <Clock className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold mb-2 text-white">Otváracia doba</h3>
-              <div className="text-slate-300 text-sm space-y-1">
-                <p><strong className="text-white">Pondelok – Piatok:</strong> 8:00 – 16:00</p>
-                <p><strong className="text-white">Sobota – Nedeľa:</strong> Zatvorené</p>
-              </div>
-            </div>
-
-          </div>
-
-          <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400">
-            <p>© {new Date().getFullYear()} AUTO - Speed s.r.o. (Maroš Mikuš). Všetky práva vyhradené.</p>
-            <p className="mt-2 sm:mt-0">Prievidza – Dubina • Od roku 2001</p>
-          </div>
-
-        </div>
-      </section>
-
-    </main>
+    <div
+      lang="sk"
+      className={`site ${archivo.variable} ${source.variable} font-body min-h-screen bg-slate-950 text-[1.0625rem] leading-relaxed text-slate-300 antialiased`}
+    >
+      <style dangerouslySetInnerHTML={{ __html: EXTRA_CSS }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <Header />
+      <main>
+        <Hero />
+        <Services />
+        <Jobs />
+        <About />
+        <Contact />
+      </main>
+      <Footer />
+      <MobileCallBar />
+    </div>
   );
 }
