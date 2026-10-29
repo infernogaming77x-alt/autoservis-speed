@@ -461,7 +461,7 @@ function Footer() {
   return (
     <footer className="border-t border-slate-800 pb-28 pt-8 md:pb-10">
       <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 text-sm text-slate-500 sm:px-6 md:flex-row md:justify-between">
-        <p>© {new Date().getFullYear()} AUTO - Speed s.r.o., Prievidza - Dubina</p>
+    <p>© 2026 AUTO - Speed s.r.o. (Maroš Mikuš). Všetky práva vyhradené.</p>
         <p>Autoservis a pneuservis od roku 2001</p>
       </div>
     </footer>
