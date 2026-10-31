@@ -11,9 +11,8 @@ import {
   MapPin, 
   Phone, 
   Award, 
-  User, 
-  ArrowRight,
-  ExternalLink
+  ExternalLink,
+  Camera
 } from 'lucide-react';
 
 export default function Page() {
@@ -35,6 +34,7 @@ export default function Page() {
 
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
             <a href="#sluzby" className="hover:text-blue-400 transition-colors">Služby</a>
+            <a href="#galeria" className="hover:text-blue-400 transition-colors">Dielňa</a>
             <a href="#o-nas" className="hover:text-blue-400 transition-colors">O nás</a>
             <a href="#kontakt" className="hover:text-blue-400 transition-colors">Kontakt</a>
           </nav>
@@ -51,137 +51,230 @@ export default function Page() {
         </div>
       </header>
 
-      {/* HERO SECTION & SERVICES */}
+      {/* HERO SECTION WITH BACKGROUND IMAGE */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 space-y-24">
         
-        {/* HERO INTRO */}
-        <section className="max-w-3xl space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/60 border border-blue-800/50 text-blue-400 text-xs font-semibold tracking-wide uppercase shadow-inner">
-            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-            Prievidza – Dubina • Od roku 2001
+        <section className="relative rounded-3xl overflow-hidden border border-slate-800 bg-[#0b101c] p-8 sm:p-12 lg:p-16 shadow-2xl">
+          {/* Background Image with Dark Gradient Overlay */}
+          <div className="absolute inset-0 z-0 opacity-25 mix-blend-luminosity">
+            <img 
+              src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&q=80&w=1600" 
+              alt="Autoservis dielňa" 
+              className="w-full h-full object-cover"
+            />
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
-            Čo pre vaše auto robíme
-          </h1>
-          <p className="text-lg sm:text-xl text-slate-400 font-normal leading-relaxed">
-            Od bežnej údržby po náročné opravy a diagnostiku. Staráme sa o vaše vozidlo komplexne a s dôrazom na stopercentnú bezpečnosť.
-          </p>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#070a10] via-[#0b101c]/90 to-transparent z-0"></div>
+
+          <div className="relative z-10 max-w-3xl space-y-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/80 border border-blue-800/60 text-blue-400 text-xs font-semibold tracking-wide uppercase shadow-inner backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+              Prievidza – Dubina • Od roku 2001
+            </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
+              Poctivý autoservis pre vaše vozidlo
+            </h1>
+            <p className="text-lg sm:text-xl text-slate-300 font-normal leading-relaxed">
+              Od bežnej údržby po náročné opravy a diagnostiku. Staráme sa o vaše auto komplexne, odborne a s garanciou kvality.
+            </p>
+            <div className="pt-2 flex flex-wrap gap-4">
+              <a 
+                href="tel:+421905272052" 
+                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all"
+              >
+                <Phone className="w-5 h-5" />
+                <span>+421 905 272 052</span>
+              </a>
+              <a 
+                href="#sluzby" 
+                className="inline-flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700 text-slate-200 font-semibold px-6 py-3.5 rounded-xl border border-slate-700 transition-all backdrop-blur-md"
+              >
+                <span>Prezrieť služby</span>
+              </a>
+            </div>
+          </div>
         </section>
 
         {/* 2. SERVICES GRID */}
-        <section id="sluzby" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          
-          {/* Service 1 */}
-          <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
-            <div className="space-y-6">
-              <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <Wrench className="w-6 h-6" />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white tracking-tight">Mechanické opravy</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  Opravy od drobných závad až po náročnejšie zásahy do mechaniky vášho auta.
-                </p>
-              </div>
-            </div>
-            <div className="pt-6 mt-6 border-t border-slate-800/60 text-xs font-semibold text-slate-400 tracking-wide uppercase">
-              Motory, podvozky, brzdy
-            </div>
+        <section id="sluzby" className="space-y-12">
+          <div className="max-w-2xl space-y-3">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Čo pre vaše auto robíme
+            </h2>
+            <p className="text-slate-400 text-base">
+              Kompletné portfólio odborných služieb pod jednou strechou v Prievidzi.
+            </p>
           </div>
 
-          {/* Service 2 */}
-          <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
-            <div className="space-y-6">
-              <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <Disc className="w-6 h-6" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            {/* Service 1 */}
+            <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
+              <div className="space-y-6">
+                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                  <Wrench className="w-6 h-6" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-white tracking-tight">Mechanické opravy</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Opravy od drobných závad až po náročnejšie zásahy do mechaniky vášho auta.
+                  </p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white tracking-tight">Pneuservis & geometria</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  Správne namontované a nastavené kolesá sú základ bezpečnej jazdy.
-                </p>
+              <div className="pt-6 mt-6 border-t border-slate-800/60 text-xs font-semibold text-slate-400 tracking-wide uppercase">
+                Motory, podvozky, brzdy
               </div>
             </div>
-            <div className="pt-6 mt-6 border-t border-slate-800/60 text-xs font-semibold text-slate-400 tracking-wide uppercase">
-              Pneumatiky, vyvažovanie, 3D geometria
-            </div>
-          </div>
 
-          {/* Service 3 */}
-          <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
-            <div className="space-y-6">
-              <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <Cpu className="w-6 h-6" />
+            {/* Service 2 */}
+            <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
+              <div className="space-y-6">
+                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                  <Disc className="w-6 h-6" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-white tracking-tight">Pneuservis & geometria</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Správne namontované a nastavené kolesá sú základ bezpečnej jazdy.
+                  </p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white tracking-tight">Autodiagnostika</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  Príčinu problému nájdeme presne, bez výmeny dielov naslepo.
-                </p>
+              <div className="pt-6 mt-6 border-t border-slate-800/60 text-xs font-semibold text-slate-400 tracking-wide uppercase">
+                Pneumatiky, vyvažovanie, 3D geometria
               </div>
             </div>
-            <div className="pt-6 mt-6 border-t border-slate-800/60 text-xs font-semibold text-slate-400 tracking-wide uppercase">
-              Chyby riadiacich jednotiek, elektronika
-            </div>
-          </div>
 
-          {/* Service 4 */}
-          <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
-            <div className="space-y-6">
-              <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <ClipboardCheck className="w-6 h-6" />
+            {/* Service 3 */}
+            <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
+              <div className="space-y-6">
+                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                  <Cpu className="w-6 h-6" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-white tracking-tight">Autodiagnostika</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Príčinu problému nájdeme presne, bez výmeny dielov naslepo.
+                  </p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white tracking-tight">STK & EK</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  Auto pripravíme na technickú a emisnú kontrolu a kontrolu vám aj vykonáme.
-                </p>
+              <div className="pt-6 mt-6 border-t border-slate-800/60 text-xs font-semibold text-slate-400 tracking-wide uppercase">
+                Chyby riadiacich jednotiek, elektronika
               </div>
             </div>
-            <div className="pt-6 mt-6 border-t border-slate-800/60 text-xs font-semibold text-slate-400 tracking-wide uppercase">
-              Predkontrola, oprava nedostatkov, STK & EK
-            </div>
-          </div>
 
-          {/* Service 5 */}
-          <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
-            <div className="space-y-6">
-              <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <Snowflake className="w-6 h-6" />
+            {/* Service 4 */}
+            <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
+              <div className="space-y-6">
+                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                  <ClipboardCheck className="w-6 h-6" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-white tracking-tight">STK & EK</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Auto pripravíme na technickú a emisnú kontrolu a kontrolu vám aj vykonáme.
+                  </p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white tracking-tight">Servis klimatizácie</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  Aby ste cestovali v pohodlí a s čistým vzduchom v kabíne.
-                </p>
+              <div className="pt-6 mt-6 border-t border-slate-800/60 text-xs font-semibold text-slate-400 tracking-wide uppercase">
+                Predkontrola, oprava nedostatkov, STK & EK
               </div>
             </div>
-            <div className="pt-6 mt-6 border-t border-slate-800/60 text-xs font-semibold text-slate-400 tracking-wide uppercase">
-              Plnenie, dezinfekcia, kontrola okruhu
-            </div>
-          </div>
 
-          {/* Service 6 */}
-          <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
-            <div className="space-y-6">
-              <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <Droplet className="w-6 h-6" />
+            {/* Service 5 */}
+            <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
+              <div className="space-y-6">
+                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                  <Snowflake className="w-6 h-6" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-white tracking-tight">Servis klimatizácie</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Aby ste cestovali v pohodlí a s čistým vzduchom v kabíne.
+                  </p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white tracking-tight">Pravidelné prehliadky</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  Pravidelná údržba predlžuje životnosť auta a predchádza drahým opravám.
-                </p>
+              <div className="pt-6 mt-6 border-t border-slate-800/60 text-xs font-semibold text-slate-400 tracking-wide uppercase">
+                Plnenie, dezinfekcia, kontrola okruhu
               </div>
             </div>
-            <div className="pt-6 mt-6 border-t border-slate-800/60 text-xs font-semibold text-slate-400 tracking-wide uppercase">
-              Výmeny olejov, filtrov, kvapalín
-            </div>
-          </div>
 
+            {/* Service 6 */}
+            <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
+              <div className="space-y-6">
+                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                  <Droplet className="w-6 h-6" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-white tracking-tight">Pravidelné prehliadky</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Pravidelná údržba predlžuje životnosť auta a predchádza drahým opravám.
+                  </p>
+                </div>
+              </div>
+              <div className="pt-6 mt-6 border-t border-slate-800/60 text-xs font-semibold text-slate-400 tracking-wide uppercase">
+                Výmeny olejov, filtrov, kvapalín
+              </div>
+            </div>
+
+          </div>
         </section>
 
-        {/* 3. ABOUT / WHY CHOOSE US */}
+        {/* 3. PHOTO GALLERY SECTION (Pohľad do dielne) */}
+        <section id="galeria" className="space-y-8">
+          <div className="flex items-center justify-between">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 text-blue-400 text-xs font-semibold uppercase tracking-wider">
+                <Camera className="w-4 h-4" />
+                <span>Z našej dielne</span>
+              </div>
+              <h2 className="text-3xl font-extrabold text-white tracking-tight">
+                Profesionálne zázmenie a vybavenie
+              </h2>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="relative group overflow-hidden rounded-2xl border border-slate-800 bg-[#0b101c] aspect-[4/3]">
+              <img 
+                src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80&w=800" 
+                alt="Servis vozidla na zdviháku" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#070a10] via-transparent to-transparent opacity-90"></div>
+              <div className="absolute bottom-4 left-4 right-4">
+                <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">Servis & Zdviháky</span>
+                <p className="text-white font-bold text-sm">Precízna práca na podvozkoch a motoroch</p>
+              </div>
+            </div>
+
+            <div className="relative group overflow-hidden rounded-2xl border border-slate-800 bg-[#0b101c] aspect-[4/3]">
+              <img 
+                src="https://images.unsplash.com/photo-1578844251758-2f71da64c96f?auto=format&fit=crop&q=80&w=800" 
+                alt="Pneuservis a vyvažovanie" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#070a10] via-transparent to-transparent opacity-90"></div>
+              <div className="absolute bottom-4 left-4 right-4">
+                <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">Pneuservis</span>
+                <p className="text-white font-bold text-sm">Moderné prezúvanie a 3D geometria</p>
+              </div>
+            </div>
+
+            <div className="relative group overflow-hidden rounded-2xl border border-slate-800 bg-[#0b101c] aspect-[4/3]">
+              <img 
+                src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&q=80&w=800" 
+                alt="Autodiagnostika" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#070a10] via-transparent to-transparent opacity-90"></div>
+              <div className="absolute bottom-4 left-4 right-4">
+                <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">Autodiagnostika</span>
+                <p className="text-white font-bold text-sm">Najnovšie diagnostické softvéry</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 4. ABOUT / WHY CHOOSE US */}
         <section id="o-nas" className="bg-gradient-to-br from-[#0b101c] to-[#080c14] border border-slate-800 rounded-3xl p-8 sm:p-12 lg:p-16 shadow-2xl space-y-10">
           <div className="max-w-3xl space-y-4">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -197,7 +290,6 @@ export default function Page() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6 border-t border-slate-800/80">
             
-            {/* Feature card: Owner */}
             <div className="flex items-start space-x-4 p-4 rounded-2xl bg-slate-900/50 border border-slate-800/60">
               <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold shrink-0 shadow-md">
                 MM
@@ -208,7 +300,6 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Feature card: Experience */}
             <div className="flex items-start space-x-4 p-4 rounded-2xl bg-slate-900/50 border border-slate-800/60">
               <div className="w-10 h-10 rounded-xl bg-blue-950 border border-blue-800 flex items-center justify-center text-blue-400 shrink-0">
                 <Award className="w-5 h-5" />
@@ -219,7 +310,6 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Feature card: Equipment */}
             <div className="flex items-start space-x-4 p-4 rounded-2xl bg-slate-900/50 border border-slate-800/60">
               <div className="w-10 h-10 rounded-xl bg-blue-950 border border-blue-800 flex items-center justify-center text-blue-400 shrink-0">
                 <ShieldCheck className="w-5 h-5" />
@@ -233,20 +323,19 @@ export default function Page() {
           </div>
         </section>
 
-        {/* 4. CONTACT & SCHEDULING SECTION */}
+        {/* 5. CONTACT & SCHEDULING SECTION */}
         <section id="kontakt" className="space-y-10">
           <div className="max-w-2xl space-y-4">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
               Zavolajte a dohodneme termín
             </h2>
             <p className="text-slate-400 text-base">
-              Telefonát je najrýchlejší spôsob, ako zistiť, kedy vám auto vezmeme do servisu.
+              Telefonát je najrýchlejší spôsob, ako zistiť, kedy vám auto vezmemo do servisu.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            {/* Phone Card */}
             <div className="bg-[#0b101c] border border-slate-800 p-8 rounded-2xl shadow-xl flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
@@ -267,7 +356,6 @@ export default function Page() {
               </a>
             </div>
 
-            {/* Address Card */}
             <div className="bg-[#0b101c] border border-slate-800 p-8 rounded-2xl shadow-xl flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
@@ -290,7 +378,6 @@ export default function Page() {
               </a>
             </div>
 
-            {/* Hours Card */}
             <div className="bg-[#0b101c] border border-slate-800 p-8 rounded-2xl shadow-xl flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
@@ -312,7 +399,7 @@ export default function Page() {
 
       </main>
 
-      {/* 5. FOOTER */}
+      {/* 6. FOOTER */}
       <footer className="border-t border-slate-800/80 mt-24 py-12 bg-[#05070c]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-400">
           <div className="space-y-1 text-center md:text-left">
