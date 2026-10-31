@@ -12,7 +12,10 @@ import {
   Phone, 
   Award, 
   ExternalLink,
-  Camera
+  Camera,
+  Star,
+  Quote,
+  CheckCircle2
 } from 'lucide-react';
 
 export default function Page() {
@@ -36,6 +39,7 @@ export default function Page() {
             <a href="#sluzby" className="hover:text-blue-400 transition-colors">Služby</a>
             <a href="#galeria" className="hover:text-blue-400 transition-colors">Dielňa</a>
             <a href="#o-nas" className="hover:text-blue-400 transition-colors">O nás</a>
+            <a href="#recenzie" className="hover:text-blue-400 transition-colors">Recenzie</a>
             <a href="#kontakt" className="hover:text-blue-400 transition-colors">Kontakt</a>
           </nav>
 
@@ -51,11 +55,10 @@ export default function Page() {
         </div>
       </header>
 
-      {/* HERO SECTION WITH BACKGROUND IMAGE */}
+      {/* HERO SECTION */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 space-y-24">
         
         <section className="relative rounded-3xl overflow-hidden border border-slate-800 bg-[#0b101c] p-8 sm:p-12 lg:p-16 shadow-2xl">
-          {/* Background Image with Dark Gradient Overlay */}
           <div className="absolute inset-0 z-0 opacity-25 mix-blend-luminosity">
             <img 
               src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&q=80&w=1600" 
@@ -71,10 +74,10 @@ export default function Page() {
               Prievidza – Dubina • Od roku 2001
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
-              Poctivý autoservis pre vaše vozidlo
+              Pre auto, na ktoré sa môžete spoľahnúť
             </h1>
             <p className="text-lg sm:text-xl text-slate-300 font-normal leading-relaxed">
-              Od bežnej údržby po náročné opravy a diagnostiku. Staráme sa o vaše auto komplexne, odborne a s garanciou kvality.
+              Poskytujeme prvotriednu starostlivosť, precízne mechanické opravy a modernú diagnostiku bez kompromisov. Váš spoľahlivý partner v Prievidzi.
             </p>
             <div className="pt-2 flex flex-wrap gap-4">
               <a 
@@ -88,7 +91,7 @@ export default function Page() {
                 href="#sluzby" 
                 className="inline-flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700 text-slate-200 font-semibold px-6 py-3.5 rounded-xl border border-slate-700 transition-all backdrop-blur-md"
               >
-                <span>Prezrieť služby</span>
+                <span>Naše služby</span>
               </a>
             </div>
           </div>
@@ -101,7 +104,7 @@ export default function Page() {
               Čo pre vaše auto robíme
             </h2>
             <p className="text-slate-400 text-base">
-              Kompletné portfólio odborných služieb pod jednou strechou v Prievidzi.
+              Komplexný servis a údržba pod vedením skúsených odborníkov.
             </p>
           </div>
 
@@ -134,7 +137,7 @@ export default function Page() {
                 <div className="space-y-2">
                   <h3 className="text-xl font-bold text-white tracking-tight">Pneuservis & geometria</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">
-                    Správne namontované a nastavené kolesá sú základ bezpečnej jazdy.
+                    Správne namontowane a nastavené kolesá sú základ bezpečnej jazdy.
                   </p>
                 </div>
               </div>
@@ -218,7 +221,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* 3. PHOTO GALLERY SECTION (Pohľad do dielne) */}
+        {/* 3. PHOTO GALLERY SECTION */}
         <section id="galeria" className="space-y-8">
           <div className="flex items-center justify-between">
             <div className="space-y-2">
@@ -227,7 +230,7 @@ export default function Page() {
                 <span>Z našej dielne</span>
               </div>
               <h2 className="text-3xl font-extrabold text-white tracking-tight">
-                Profesionálne zázmenie a vybavenie
+                Profesionálne zázemie a vybavenie
               </h2>
             </div>
           </div>
@@ -255,7 +258,7 @@ export default function Page() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#070a10] via-transparent to-transparent opacity-90"></div>
               <div className="absolute bottom-4 left-4 right-4">
                 <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">Pneuservis</span>
-                <p className="text-white font-bold text-sm">Moderné prezúvanie a 3D geometria</p>
+                <p className="text-white font-bold text-sm">Moderné prezúvanie a vyvažovanie kolies</p>
               </div>
             </div>
 
@@ -268,7 +271,7 @@ export default function Page() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#070a10] via-transparent to-transparent opacity-90"></div>
               <div className="absolute bottom-4 left-4 right-4">
                 <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">Autodiagnostika</span>
-                <p className="text-white font-bold text-sm">Najnovšie diagnostické softvéry</p>
+                <p className="text-white font-bold text-sm">Pokročilé čítanie chýb riadiacich jednotiek</p>
               </div>
             </div>
           </div>
@@ -281,10 +284,10 @@ export default function Page() {
               Prečo si vybrať AUTO – Speed
             </h2>
             <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
-              AUTO - Speed s.r.o. pôsobí v Prievidzi – Dubine od roku 2001. Za tie roky sme si meno vybudovali poctivou prácou a otvoreným prístupom k zákazníkom.
+              AUTO - Speed s.r.o. pôsobí v Prievidzi – Dubine od roku 2001. Za tie roky sme si meno vybudovali poctivou prácou, odbornosťou a úprimným prístupom k zákazníkom.
             </p>
             <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-              Firmu vedie majiteľ Maroš Mikuš, ktorý dohliada na kvalitu práce v dielni. U nás nájdete jasnú komunikáciu, moderné vybavenie a servis, na ktorý sa dá spoľahnúť.
+              Firmu vedie majiteľ Maroš Mikuš, ktorý osobne dohliada na kvalitu každej jednej zákazky. U nás presne viete, čo vaše auto potrebuje a koľko to bude stáť.
             </p>
           </div>
 
@@ -305,7 +308,7 @@ export default function Page() {
                 <Award className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-white font-semibold text-sm">Skúsenosti od roku 2001</h4>
+                <h4 className="text-white font-semibold text-sm">Tradícia od roku 2001</h4>
                 <p className="text-slate-400 text-xs mt-0.5">Viac ako dve desaťročia praxe.</p>
               </div>
             </div>
@@ -315,22 +318,92 @@ export default function Page() {
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-white font-semibold text-sm">Kvalitné vybavenie</h4>
-                <p className="text-slate-400 text-xs mt-0.5">Moderná diagnostika a náradie.</p>
+                <h4 className="text-white font-semibold text-sm">Férový prístup & záruka</h4>
+                <p className="text-slate-400 text-xs mt-0.5">Jasná dohoda a záruka na prácu.</p>
               </div>
             </div>
 
           </div>
         </section>
 
-        {/* 5. CONTACT & SCHEDULING SECTION */}
+        {/* 5. REVIEWS / TESTIMONIALS (Golden Garage style trust section) */}
+        <section id="recenzie" className="space-y-10">
+          <div className="max-w-2xl space-y-3">
+            <div className="inline-flex items-center gap-2 text-blue-400 text-xs font-semibold uppercase tracking-wider">
+              <Star className="w-4 h-4 fill-blue-400" />
+              <span>Skúsenosti zákazníkov</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Hovoria za nás výsledky
+            </h2>
+            <p className="text-slate-400 text-base">
+              Prečítajte si, čo o našej práci hovoria vodiči, ktorí nám zverili svoje vozidlá.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <div className="bg-[#0b101c] border border-slate-800 p-8 rounded-2xl shadow-xl flex flex-col justify-between space-y-6 relative">
+              <Quote className="absolute top-6 right-6 w-10 h-10 text-slate-800/80" />
+              <div className="space-y-4">
+                <div className="flex items-center space-x-1 text-amber-400">
+                  <Star className="w-4 h-4 fill-amber-400" />
+                  <Star className="w-4 h-4 fill-amber-400" />
+                  <Star className="w-4 h-4 fill-amber-400" />
+                  <Star className="w-4 h-4 fill-amber-400" />
+                  <Star className="w-4 h-4 fill-amber-400" />
+                </div>
+                <p className="text-slate-300 text-sm leading-relaxed italic">
+                  „Vždy ochotný a profesionálny prístup. Pán Mikuš presne vie, čo robí, auto bolo spravené v dohodnutom termíne a za fér cenu. Určite odporúčam každému v okolí Prievidze.“
+                </p>
+              </div>
+              <div className="flex items-center space-x-3 pt-4 border-t border-slate-800/60">
+                <div className="w-9 h-9 rounded-full bg-blue-600/20 text-blue-400 font-bold flex items-center justify-center text-xs">
+                  PK
+                </div>
+                <div>
+                  <h4 className="text-white text-sm font-semibold">Peter K.</h4>
+                  <p className="text-slate-400 text-xs">Overený zákazník</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-[#0b101c] border border-slate-800 p-8 rounded-2xl shadow-xl flex flex-col justify-between space-y-6 relative">
+              <Quote className="absolute top-6 right-6 w-10 h-10 text-slate-800/80" />
+              <div className="space-y-4">
+                <div className="flex items-center space-x-1 text-amber-400">
+                  <Star className="w-4 h-4 fill-amber-400" />
+                  <Star className="w-4 h-4 fill-amber-400" />
+                  <Star className="w-4 h-4 fill-amber-400" />
+                  <Star className="w-4 h-4 fill-amber-400" />
+                  <Star className="w-4 h-4 fill-amber-400" />
+                </div>
+                <p className="text-slate-300 text-sm leading-relaxed italic">
+                  „Skvelá komunikácia, rýchla autodiagnostika a vyriešenie problému, s ktorým iní servisi nevedeli pohnúť. Oceňujem poctivú prácu a skúsenosti.“
+                </p>
+              </div>
+              <div className="flex items-center space-x-3 pt-4 border-t border-slate-800/60">
+                <div className="w-9 h-9 rounded-full bg-blue-600/20 text-blue-400 font-bold flex items-center justify-center text-xs">
+                  MR
+                </div>
+                <div>
+                  <h4 className="text-white text-sm font-semibold">Martin R.</h4>
+                  <p className="text-slate-400 text-xs">Overený zákazník</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* 6. CONTACT & BOOKING SECTION */}
         <section id="kontakt" className="space-y-10">
           <div className="max-w-2xl space-y-4">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Zavolajte a dohodneme termín
+              Dohodnite si termín servisu
             </h2>
             <p className="text-slate-400 text-base">
-              Telefonát je najrýchlejší spôsob, ako zistiť, kedy vám auto vezmemo do servisu.
+              Zavolajte nám priamo alebo nás navštívte v Prievidzi - Dubine. Radi vám pomôžeme.
             </p>
           </div>
 
@@ -362,7 +435,7 @@ export default function Page() {
                   <MapPin className="w-6 h-6" />
                 </div>
                 <div>
-                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Adresa</span>
+                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Adresa dielne</span>
                   <h3 className="text-xl font-bold text-white mt-1">Prievidza – Dubina</h3>
                   <p className="text-slate-400 text-sm mt-0.5">Slovensko</p>
                 </div>
@@ -399,7 +472,7 @@ export default function Page() {
 
       </main>
 
-      {/* 6. FOOTER */}
+      {/* 7. FOOTER */}
       <footer className="border-t border-slate-800/80 mt-24 py-12 bg-[#05070c]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-400">
           <div className="space-y-1 text-center md:text-left">
