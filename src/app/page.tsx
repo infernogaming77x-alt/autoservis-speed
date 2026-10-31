@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, Sofia_Sans_Extra_Condensed } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import type { LucideIcon } from "lucide-react";
 import {
   Award,
   BadgeCheck,
+  Car,
   CircleDot,
   ClipboardCheck,
   Clock,
@@ -17,16 +18,8 @@ import {
   Wrench,
 } from "lucide-react";
 
-const display = Sofia_Sans_Extra_Condensed({
+const font = Plus_Jakarta_Sans({
   subsets: ["latin", "latin-ext"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const body = IBM_Plex_Sans({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600"],
-  variable: "--font-body",
   display: "swap",
 });
 
@@ -40,8 +33,6 @@ const PHONE_DISPLAY = "+421 905 272 052";
 const PHONE_HREF = "tel:+421905272052";
 const MAPS_HREF =
   "https://www.google.com/maps/search/?api=1&query=AUTO+Speed+Prievidza+Dubina";
-
-const DISPLAY = "font-[family-name:var(--font-display)]";
 
 const NAV_LINKS = [
   { href: "#sluzby", label: "Služby" },
@@ -110,7 +101,7 @@ type Reason = {
 const REASONS: Reason[] = [
   {
     icon: Award,
-    title: "Skúsenosti od 2001",
+    title: "Skúsenosti od roku 2001",
     description:
       "Viac ako dve desaťročia práce na autách zákazníkov z Prievidze a okolia.",
   },
@@ -134,137 +125,35 @@ const REASONS: Reason[] = [
   },
 ];
 
-/**
- * Koleso s nápismi na boku pneumatiky (rozmer 205/55 R16 91V je bežný rozmer
- * pre osobné autá). Po načítaní stránky sa raz roztočí a zastaví.
- */
-function Wheel({ className }: { className?: string }) {
-  const polar = (angle: number, radius: number) => {
-    const rad = (angle * Math.PI) / 180;
-    return {
-      x: +(200 + radius * Math.cos(rad)).toFixed(2),
-      y: +(200 + radius * Math.sin(rad)).toFixed(2),
-    };
-  };
-  const angles = [-90, -18, 54, 126, 198];
+const TRUST = ["Záruka na prácu", "Férové ceny", "Moderné vybavenie"];
 
-  return (
-    <svg
-      viewBox="0 0 400 400"
-      fill="none"
-      aria-hidden="true"
-      className={className}
-    >
-      <defs>
-        <path id="sidewall-path" d="M 200 52 A 148 148 0 1 1 199.9 52" />
-      </defs>
-      <g className="wheel-spin">
-        {/* pneumatika */}
-        <circle cx="200" cy="200" r="190" fill="#0a0f19" stroke="#22345a" strokeWidth="1.5" />
-        <circle
-          cx="200"
-          cy="200"
-          r="185"
-          stroke="#16233a"
-          strokeWidth="9"
-          strokeDasharray="11 7"
-        />
-        <circle cx="200" cy="200" r="172" stroke="#17233a" strokeWidth="1.5" />
-
-        {/* nápisy na boku pneumatiky */}
-        <text
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: 25,
-            fontWeight: 700,
-            letterSpacing: 3,
-          }}
-        >
-          <textPath href="#sidewall-path" startOffset="10">
-            <tspan fill="#6c9bff">AUTO - SPEED</tspan>
-            <tspan fill="#4f70b5" dx="30">PRIEVIDZA – DUBINA</tspan>
-            <tspan fill="#4f70b5" dx="30">205/55 R16 91V</tspan>
-            <tspan fill="#4f70b5" dx="30">OD 2001</tspan>
-          </textPath>
-        </text>
-
-        <circle cx="200" cy="200" r="118" stroke="#22345a" strokeWidth="1.5" />
-
-        {/* disk */}
-        <circle cx="200" cy="200" r="104" fill="#070b13" stroke="#6c9bff" strokeWidth="2" />
-        {angles.map((a) => {
-          const from = polar(a, 28);
-          const to = polar(a, 90);
-          return (
-            <g key={a}>
-              <line
-                x1={from.x}
-                y1={from.y}
-                x2={to.x}
-                y2={to.y}
-                stroke="#14264a"
-                strokeWidth="16"
-                strokeLinecap="round"
-              />
-              <line
-                x1={from.x}
-                y1={from.y}
-                x2={to.x}
-                y2={to.y}
-                stroke="#2f6bff"
-                strokeWidth="1.5"
-                strokeOpacity="0.8"
-                strokeLinecap="round"
-              />
-            </g>
-          );
-        })}
-        <circle cx="200" cy="200" r="28" fill="#0a1630" stroke="#2f6bff" strokeWidth="2" />
-        {angles.map((a) => {
-          const p = polar(a, 14);
-          return <circle key={`bolt-${a}`} cx={p.x} cy={p.y} r="3" fill="#6c9bff" />;
-        })}
-      </g>
-    </svg>
-  );
-}
-
-const MOTION_CSS = `
-@keyframes wheel-settle {
-  from { transform: rotate(-720deg); }
-  to { transform: rotate(0deg); }
-}
-.wheel-spin {
-  transform-box: view-box;
-  transform-origin: 50% 50%;
-  animation: wheel-settle 2.2s cubic-bezier(0.12, 0.8, 0.2, 1) both;
-}
-@media (prefers-reduced-motion: reduce) {
-  .wheel-spin { animation: none; }
-}
-`;
+const CARD =
+  "rounded-2xl border border-white/10 bg-white/[0.035] backdrop-blur-sm";
+const CHIP =
+  "flex shrink-0 items-center justify-center rounded-xl bg-blue-500/15 text-blue-300";
 
 export default function Page() {
   return (
     <div
-      className={`${display.variable} ${body.variable} min-h-screen bg-[#05070b] font-[family-name:var(--font-body)] text-[#c3cde0] antialiased selection:bg-[#2f6bff]/40 selection:text-white`}
+      className={`${font.className} min-h-screen bg-[#060a14] text-[#c2cde3] antialiased selection:bg-blue-500/40 selection:text-white`}
     >
-      <style>{MOTION_CSS}</style>
-
       {/* ───────────── HLAVIČKA ───────────── */}
-      <header className="sticky top-0 z-50 border-b border-[#17233a] bg-[#05070b]/90 backdrop-blur">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#060a14]/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <a
             href="#top"
-            className="rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6c9bff]"
+            className="flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
             aria-label="AUTO - Speed s.r.o., úvod"
           >
-            <span className="flex items-baseline gap-2">
-              <span className={`${DISPLAY} text-3xl font-extrabold leading-none tracking-wide text-white`}>
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-lg shadow-blue-900/40">
+              <Car className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <span className="leading-tight">
+              <span className="block text-base font-bold text-white">
                 AUTO - Speed
               </span>
-              <span className="hidden text-xs text-[#8c9ab3] sm:inline">
-                autoservis a pneuservis
+              <span className="block text-xs text-[#94a3c4]">
+                Autoservis a pneuservis
               </span>
             </span>
           </a>
@@ -274,7 +163,7 @@ export default function Page() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-[#c3cde0] transition-colors hover:text-white focus-visible:text-white focus-visible:outline-none"
+                className="text-sm font-medium text-[#c2cde3] transition-colors hover:text-white focus-visible:text-white focus-visible:outline-none"
               >
                 {link.label}
               </a>
@@ -283,7 +172,7 @@ export default function Page() {
 
           <a
             href={PHONE_HREF}
-            className="inline-flex items-center gap-2 rounded-md bg-[#2f6bff] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#4d82ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6c9bff] focus-visible:ring-offset-2 focus-visible:ring-offset-[#05070b]"
+            className="inline-flex items-center gap-2 rounded-full bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-900/40 transition-colors hover:bg-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#060a14]"
           >
             <Phone className="h-4 w-4" aria-hidden="true" />
             Zavolať
@@ -291,14 +180,14 @@ export default function Page() {
         </div>
 
         <nav
-          className="flex gap-2 overflow-x-auto border-t border-[#17233a] px-4 py-2 md:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex gap-2 overflow-x-auto border-t border-white/5 px-4 py-2 md:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           aria-label="Mobilná navigácia"
         >
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="shrink-0 rounded-full border border-[#22345a] px-4 py-1.5 text-sm font-medium text-[#e8eefc] transition-colors hover:border-[#2f6bff]"
+              className="shrink-0 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-slate-200 transition-colors hover:border-blue-400/50"
             >
               {link.label}
             </a>
@@ -308,16 +197,24 @@ export default function Page() {
 
       <main id="top">
         {/* ───────────── HERO ───────────── */}
-        <section className="border-b border-[#17233a]">
-          <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10 lg:py-24">
+        <section className="relative isolate overflow-hidden">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[36rem] bg-[radial-gradient(60rem_28rem_at_75%_-10%,rgba(59,130,246,0.22),transparent_70%)]"
+          />
+
+          <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
             <div>
-              <h1
-                className={`${DISPLAY} max-w-3xl text-6xl font-extrabold leading-[0.95] text-white sm:text-7xl lg:text-8xl`}
-              >
+              <span className="inline-flex items-center gap-2 rounded-full border border-blue-400/25 bg-blue-500/10 px-3.5 py-1.5 text-sm font-medium text-blue-200">
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
+                Viac ako 20 rokov dôvery
+              </span>
+
+              <h1 className="mt-6 text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl">
                 Poctivý autoservis v Prievidzi – Dubine od roku 2001
               </h1>
 
-              <p className="mt-7 max-w-lg text-lg leading-relaxed text-[#9fb0cc]">
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#94a3c4]">
                 Opravy, pneuservis, diagnostika, STK & EK aj klimatizácia na
                 jednom mieste. Zavolajte a dohodneme termín.
               </p>
@@ -325,178 +222,237 @@ export default function Page() {
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <a
                   href={PHONE_HREF}
-                  className="inline-flex items-center justify-center gap-2.5 rounded-md bg-[#2f6bff] px-6 py-3.5 text-base font-semibold text-white transition-colors hover:bg-[#4d82ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6c9bff] focus-visible:ring-offset-2 focus-visible:ring-offset-[#05070b]"
+                  className="inline-flex items-center justify-center gap-2.5 rounded-full bg-blue-500 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-blue-900/40 transition-colors hover:bg-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#060a14]"
                 >
                   <Phone className="h-5 w-5" aria-hidden="true" />
                   Zavolať {PHONE_DISPLAY}
                 </a>
                 <a
                   href="#sluzby"
-                  className="inline-flex items-center justify-center rounded-md border border-[#22345a] px-6 py-3.5 text-base font-semibold text-[#e8eefc] transition-colors hover:border-[#2f6bff] hover:bg-[#0a101c] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6c9bff]"
+                  className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-3.5 text-base font-semibold text-slate-100 transition-colors hover:border-blue-400/50 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
                 >
                   Naše služby
                 </a>
               </div>
 
-              <p className="mt-6 text-sm text-[#8c9ab3]">
-                Otvorené pondelok až piatok, 8:00 – 16:00.
-              </p>
+              <ul className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm text-[#c2cde3]">
+                {TRUST.map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <BadgeCheck className="h-5 w-5 text-blue-400" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            <div className="mx-auto w-full max-w-sm lg:max-w-none">
-              <Wheel className="h-auto w-full" />
-            </div>
+            {/* karta dielne */}
+            <aside
+              className={`${CARD} relative p-6 shadow-2xl shadow-blue-950/50 sm:p-8`}
+              aria-label="Údaje o dielni"
+            >
+              <p className="text-xl font-bold text-white">AUTO - Speed s.r.o.</p>
+              <p className="mt-1 text-sm text-[#94a3c4]">
+                Autoservis a pneuservis od roku 2001
+              </p>
+
+              <div className="mt-6 space-y-3">
+                <a
+                  href={PHONE_HREF}
+                  className="group flex items-center gap-4 rounded-xl border border-blue-400/25 bg-blue-500/10 p-4 transition-colors hover:border-blue-300/60 hover:bg-blue-500/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                >
+                  <span className={`${CHIP} h-11 w-11 bg-blue-500/25 text-white`}>
+                    <Phone className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <span>
+                    <span className="block text-sm text-[#94a3c4]">Telefón</span>
+                    <span className="block text-lg font-bold text-white">
+                      {PHONE_DISPLAY}
+                    </span>
+                  </span>
+                </a>
+
+                <div className="flex items-center gap-4 rounded-xl bg-white/[0.04] p-4">
+                  <span className={`${CHIP} h-11 w-11`}>
+                    <MapPin className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <span>
+                    <span className="block text-sm text-[#94a3c4]">Adresa</span>
+                    <span className="block font-semibold text-white">
+                      Prievidza – Dubina
+                    </span>
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-4 rounded-xl bg-white/[0.04] p-4">
+                  <span className={`${CHIP} h-11 w-11`}>
+                    <Clock className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <span>
+                    <span className="block text-sm text-[#94a3c4]">Otvorené</span>
+                    <span className="block font-semibold text-white">
+                      Po – Pi, 8:00 – 16:00
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </aside>
           </div>
         </section>
 
         {/* ───────────── SLUŽBY ───────────── */}
         <section id="sluzby" className="scroll-mt-28 py-20 sm:py-24">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <h2
-              className={`${DISPLAY} max-w-2xl text-5xl font-extrabold leading-none text-white sm:text-6xl`}
-            >
-              Čo pre vaše auto robíme
-            </h2>
-            <p className="mt-5 max-w-xl text-[#9fb0cc]">
-              Od bežnej údržby po náročné opravy a diagnostiku. Staráme sa o
-              vaše vozidlo komplexne.
-            </p>
+            <div className="max-w-2xl">
+              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Čo pre vaše auto robíme
+              </h2>
+              <p className="mt-4 text-[#94a3c4]">
+                Od bežnej údržby po náročné opravy a diagnostiku. Staráme sa o
+                vaše vozidlo komplexne.
+              </p>
+            </div>
 
-            <ul className="mt-12">
+            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {SERVICES.map(({ icon: Icon, title, description, detail }) => (
-                <li
+                <article
                   key={title}
-                  className="group grid gap-x-6 gap-y-2 border-t border-[#17233a] px-2 py-6 transition-colors hover:bg-[#0a101c] sm:grid-cols-[2rem_1fr] sm:px-4 lg:grid-cols-[2rem_1.1fr_1fr_1fr] lg:items-center"
+                  className={`${CARD} group p-6 transition duration-200 hover:-translate-y-1 hover:border-blue-400/40 hover:bg-white/[0.06] hover:shadow-xl hover:shadow-blue-950/40`}
                 >
-                  <Icon
-                    className="h-7 w-7 text-[#2f6bff] transition-colors group-hover:text-[#6c9bff]"
-                    aria-hidden="true"
-                  />
-                  <h3 className={`${DISPLAY} text-3xl font-bold leading-none text-white`}>
-                    {title}
-                  </h3>
-                  <p className="text-[15px] leading-relaxed text-[#9fb0cc] sm:col-start-2 lg:col-start-3">
+                  <span className={`${CHIP} h-12 w-12 transition-colors group-hover:bg-blue-500/25`}>
+                    <Icon className="h-6 w-6" aria-hidden="true" />
+                  </span>
+                  <h3 className="mt-5 text-lg font-semibold text-white">{title}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-[#94a3c4]">
                     {description}
                   </p>
-                  <p className="text-sm text-[#8c9ab3] sm:col-start-2 lg:col-start-4">
+                  <p className="mt-4 border-t border-white/10 pt-4 text-sm text-[#c2cde3]">
                     {detail}
                   </p>
-                </li>
+                </article>
               ))}
-            </ul>
+            </div>
           </div>
         </section>
 
         {/* ───────────── O NÁS ───────────── */}
-        <section id="o-nas" className="scroll-mt-28 bg-[#0a1630]">
-          <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
-            <div className="grid gap-8 lg:grid-cols-2 lg:gap-20">
-              <h2
-                className={`${DISPLAY} text-5xl font-extrabold leading-none text-white sm:text-6xl`}
-              >
-                Prečo si vybrať AUTO - Speed
-              </h2>
-              <div className="space-y-4 leading-relaxed text-[#b4c4e6]">
-                <p>
+        <section id="o-nas" className="scroll-mt-28 pb-20 sm:pb-24">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="grid gap-10 rounded-3xl border border-white/10 bg-gradient-to-br from-[#0e1c3d] to-[#0a1226] p-6 sm:p-10 lg:grid-cols-2 lg:gap-14 lg:p-14">
+              <div>
+                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                  Prečo si vybrať AUTO - Speed
+                </h2>
+                <p className="mt-5 leading-relaxed text-[#b4c4e6]">
                   AUTO - Speed s.r.o. pôsobí v Prievidzi – Dubine od roku 2001.
                   Za tie roky sme si meno vybudovali poctivou prácou a otvoreným
                   prístupom k zákazníkom.
                 </p>
-                <p>
+                <p className="mt-4 leading-relaxed text-[#b4c4e6]">
                   Firmu vedie majiteľ Maroš Mikuš, ktorý dohliada na kvalitu
                   práce v dielni. U nás nájdete jasnú komunikáciu, moderné
                   vybavenie a servis, na ktorý sa dá spoľahnúť.
                 </p>
-              </div>
-            </div>
-
-            <ul className="mt-14 grid gap-x-16 gap-y-10 sm:grid-cols-2">
-              {REASONS.map(({ icon: Icon, title, description }) => (
-                <li key={title} className="flex gap-5">
-                  <Icon
-                    className="mt-1 h-7 w-7 shrink-0 text-[#6c9bff]"
-                    aria-hidden="true"
-                  />
+                <div className="mt-7 flex items-center gap-4">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/25 text-base font-bold text-white">
+                    MM
+                  </span>
                   <div>
-                    <h3 className={`${DISPLAY} text-3xl font-bold leading-none text-white`}>
-                      {title}
-                    </h3>
-                    <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-[#a9bde6]">
-                      {description}
-                    </p>
+                    <p className="font-semibold text-white">Maroš Mikuš</p>
+                    <p className="text-sm text-[#94a3c4]">Majiteľ</p>
                   </div>
-                </li>
-              ))}
-            </ul>
+                </div>
+              </div>
+
+              <ul className="space-y-5">
+                {REASONS.map(({ icon: Icon, title, description }) => (
+                  <li key={title} className="flex gap-4">
+                    <span className={`${CHIP} h-11 w-11`}>
+                      <Icon className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                    <div>
+                      <h3 className="font-semibold text-white">{title}</h3>
+                      <p className="mt-1 text-[15px] leading-relaxed text-[#a9bde6]">
+                        {description}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
 
         {/* ───────────── KONTAKT ───────────── */}
-        <section id="kontakt" className="scroll-mt-28 py-20 sm:py-24">
+        <section id="kontakt" className="scroll-mt-28 pb-20 sm:pb-24">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <h2
-              className={`${DISPLAY} text-5xl font-extrabold leading-none text-white sm:text-6xl`}
-            >
-              Zavolajte a dohodneme termín
-            </h2>
+            <div className="max-w-2xl">
+              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Zavolajte a dohodneme termín
+              </h2>
+              <p className="mt-4 text-[#94a3c4]">
+                Telefonát je najrýchlejší spôsob, ako zistiť, kedy vám auto
+                vezmeme do servisu.
+              </p>
+            </div>
 
-            <a
-              href={PHONE_HREF}
-              className={`${DISPLAY} mt-7 inline-flex items-center gap-4 rounded text-6xl font-extrabold leading-none text-[#6c9bff] transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6c9bff] sm:text-8xl`}
-            >
-              <Phone className="h-9 w-9 sm:h-14 sm:w-14" aria-hidden="true" />
-              {PHONE_DISPLAY}
-            </a>
+            <div className="mt-10 grid gap-5 md:grid-cols-3">
+              <a
+                href={PHONE_HREF}
+                className="group rounded-2xl border border-blue-400/30 bg-gradient-to-b from-blue-500/20 to-blue-500/5 p-6 transition duration-200 hover:-translate-y-1 hover:border-blue-300/60 hover:shadow-xl hover:shadow-blue-950/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+              >
+                <span className={`${CHIP} h-12 w-12 bg-blue-500/30 text-white`}>
+                  <Phone className="h-6 w-6" aria-hidden="true" />
+                </span>
+                <p className="mt-5 text-sm text-[#94a3c4]">Telefón</p>
+                <p className="mt-1 text-xl font-bold text-white">{PHONE_DISPLAY}</p>
+                <p className="mt-3 text-sm font-medium text-blue-300 transition-colors group-hover:text-white">
+                  Zavolať teraz
+                </p>
+              </a>
 
-            <dl className="mt-14 grid gap-8 md:grid-cols-2">
-              <div className="flex gap-4">
-                <MapPin className="mt-1 h-6 w-6 shrink-0 text-[#2f6bff]" aria-hidden="true" />
-                <div>
-                  <dt className="text-sm text-[#8c9ab3]">Adresa</dt>
-                  <dd className="mt-1 text-lg font-medium text-white">
-                    Prievidza – Dubina, Slovensko
-                  </dd>
-                  <dd className="mt-2">
-                    <a
-                      href={MAPS_HREF}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm font-medium text-[#6c9bff] underline-offset-4 transition-colors hover:text-white hover:underline focus-visible:outline-none focus-visible:underline"
-                    >
-                      Otvoriť v mapách
-                    </a>
-                  </dd>
-                </div>
+              <a
+                href={MAPS_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${CARD} group p-6 transition duration-200 hover:-translate-y-1 hover:border-blue-400/40 hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300`}
+              >
+                <span className={`${CHIP} h-12 w-12`}>
+                  <MapPin className="h-6 w-6" aria-hidden="true" />
+                </span>
+                <p className="mt-5 text-sm text-[#94a3c4]">Adresa</p>
+                <p className="mt-1 text-xl font-bold text-white">Prievidza – Dubina</p>
+                <p className="text-[#94a3c4]">Slovensko</p>
+                <p className="mt-3 text-sm font-medium text-blue-300 transition-colors group-hover:text-white">
+                  Otvoriť v mapách
+                </p>
+              </a>
+
+              <div className={`${CARD} p-6`}>
+                <span className={`${CHIP} h-12 w-12`}>
+                  <Clock className="h-6 w-6" aria-hidden="true" />
+                </span>
+                <p className="mt-5 text-sm text-[#94a3c4]">Otváracia doba</p>
+                <p className="mt-1 text-xl font-bold text-white">Pondelok – Piatok</p>
+                <p className="text-[#c2cde3]">8:00 – 16:00</p>
+                <p className="mt-3 text-sm text-[#94a3c4]">
+                  V sobotu a nedeľu máme zatvorené.
+                </p>
               </div>
-              <div className="flex gap-4">
-                <Clock className="mt-1 h-6 w-6 shrink-0 text-[#2f6bff]" aria-hidden="true" />
-                <div>
-                  <dt className="text-sm text-[#8c9ab3]">Otváracia doba</dt>
-                  <dd className="mt-1 text-lg font-medium text-white">
-                    Pondelok – Piatok: 8:00 – 16:00
-                  </dd>
-                  <dd className="mt-1 text-sm text-[#8c9ab3]">
-                    V sobotu a nedeľu máme zatvorené.
-                  </dd>
-                </div>
-              </div>
-            </dl>
+            </div>
           </div>
         </section>
       </main>
 
       {/* ───────────── PÄTIČKA ───────────── */}
-      <footer className="border-t border-[#17233a]">
+      <footer className="border-t border-white/10 bg-[#04070f]">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-10 text-sm sm:px-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className={`${DISPLAY} text-3xl font-extrabold leading-none tracking-wide text-white`}>
-              AUTO - Speed s.r.o.
-            </p>
-            <p className="mt-2 text-[#8c9ab3]">
+            <p className="text-lg font-bold text-white">AUTO - Speed s.r.o.</p>
+            <p className="mt-1 text-[#94a3c4]">
               Autoservis a pneuservis, Prievidza – Dubina. Od roku 2001.
             </p>
           </div>
-          <div className="text-[#8c9ab3] md:text-right">
+          <div className="text-[#94a3c4] md:text-right">
             <p>Majiteľ: Maroš Mikuš</p>
             <p className="mt-1">© 2026 AUTO - Speed s.r.o. Všetky práva vyhradené.</p>
           </div>
