@@ -12,10 +12,8 @@ import {
   Phone, 
   Award, 
   ExternalLink,
-  Camera,
   Star,
-  Quote,
-  CheckCircle2
+  Quote
 } from 'lucide-react';
 
 export default function Page() {
@@ -37,7 +35,6 @@ export default function Page() {
 
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
             <a href="#sluzby" className="hover:text-blue-400 transition-colors">Služby</a>
-            <a href="#galeria" className="hover:text-blue-400 transition-colors">Dielňa</a>
             <a href="#o-nas" className="hover:text-blue-400 transition-colors">O nás</a>
             <a href="#recenzie" className="hover:text-blue-400 transition-colors">Recenzie</a>
             <a href="#kontakt" className="hover:text-blue-400 transition-colors">Kontakt</a>
@@ -59,14 +56,7 @@ export default function Page() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 space-y-24">
         
         <section className="relative rounded-3xl overflow-hidden border border-slate-800 bg-[#0b101c] p-8 sm:p-12 lg:p-16 shadow-2xl">
-          <div className="absolute inset-0 z-0 opacity-25 mix-blend-luminosity">
-            <img 
-              src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&q=80&w=1600" 
-              alt="Autoservis dielňa" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#070a10] via-[#0b101c]/90 to-transparent z-0"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-950/20 via-transparent to-transparent z-0"></div>
 
           <div className="relative z-10 max-w-3xl space-y-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/80 border border-blue-800/60 text-blue-400 text-xs font-semibold tracking-wide uppercase shadow-inner backdrop-blur-md">
@@ -110,7 +100,6 @@ export default function Page() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            {/* Service 1 */}
             <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
               <div className="space-y-6">
                 <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
@@ -128,7 +117,6 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Service 2 */}
             <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
               <div className="space-y-6">
                 <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
@@ -137,7 +125,7 @@ export default function Page() {
                 <div className="space-y-2">
                   <h3 className="text-xl font-bold text-white tracking-tight">Pneuservis & geometria</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">
-                    Správne namontowane a nastavené kolesá sú základ bezpečnej jazdy.
+                    Správne namontované a nastavené kolesá sú základ bezpečnej jazdy.
                   </p>
                 </div>
               </div>
@@ -146,7 +134,6 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Service 3 */}
             <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
               <div className="space-y-6">
                 <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
@@ -164,7 +151,6 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Service 4 */}
             <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
               <div className="space-y-6">
                 <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
@@ -182,7 +168,6 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Service 5 */}
             <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
               <div className="space-y-6">
                 <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
@@ -200,7 +185,6 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Service 6 */}
             <div className="group relative bg-[#0b101c]/80 hover:bg-[#0e1626] border border-slate-800/80 hover:border-slate-700 p-8 rounded-2xl transition-all duration-300 shadow-xl flex flex-col justify-between">
               <div className="space-y-6">
                 <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
@@ -221,63 +205,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* 3. PHOTO GALLERY SECTION */}
-        <section id="galeria" className="space-y-8">
-          <div className="flex items-center justify-between">
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 text-blue-400 text-xs font-semibold uppercase tracking-wider">
-                <Camera className="w-4 h-4" />
-                <span>Z našej dielne</span>
-              </div>
-              <h2 className="text-3xl font-extrabold text-white tracking-tight">
-                Profesionálne zázemie a vybavenie
-              </h2>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="relative group overflow-hidden rounded-2xl border border-slate-800 bg-[#0b101c] aspect-[4/3]">
-              <img 
-                src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80&w=800" 
-                alt="Servis vozidla na zdviháku" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#070a10] via-transparent to-transparent opacity-90"></div>
-              <div className="absolute bottom-4 left-4 right-4">
-                <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">Servis & Zdviháky</span>
-                <p className="text-white font-bold text-sm">Precízna práca na podvozkoch a motoroch</p>
-              </div>
-            </div>
-
-            <div className="relative group overflow-hidden rounded-2xl border border-slate-800 bg-[#0b101c] aspect-[4/3]">
-              <img 
-                src="https://images.unsplash.com/photo-1578844251758-2f71da64c96f?auto=format&fit=crop&q=80&w=800" 
-                alt="Pneuservis a vyvažovanie" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#070a10] via-transparent to-transparent opacity-90"></div>
-              <div className="absolute bottom-4 left-4 right-4">
-                <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">Pneuservis</span>
-                <p className="text-white font-bold text-sm">Moderné prezúvanie a vyvažovanie kolies</p>
-              </div>
-            </div>
-
-            <div className="relative group overflow-hidden rounded-2xl border border-slate-800 bg-[#0b101c] aspect-[4/3]">
-              <img 
-                src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&q=80&w=800" 
-                alt="Autodiagnostika" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#070a10] via-transparent to-transparent opacity-90"></div>
-              <div className="absolute bottom-4 left-4 right-4">
-                <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">Autodiagnostika</span>
-                <p className="text-white font-bold text-sm">Pokročilé čítanie chýb riadiacich jednotiek</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 4. ABOUT / WHY CHOOSE US */}
+        {/* 3. ABOUT / WHY CHOOSE US */}
         <section id="o-nas" className="bg-gradient-to-br from-[#0b101c] to-[#080c14] border border-slate-800 rounded-3xl p-8 sm:p-12 lg:p-16 shadow-2xl space-y-10">
           <div className="max-w-3xl space-y-4">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -326,7 +254,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* 5. REVIEWS / TESTIMONIALS (Golden Garage style trust section) */}
+        {/* 4. REVIEWS / TESTIMONIALS */}
         <section id="recenzie" className="space-y-10">
           <div className="max-w-2xl space-y-3">
             <div className="inline-flex items-center gap-2 text-blue-400 text-xs font-semibold uppercase tracking-wider">
@@ -396,7 +324,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* 6. CONTACT & BOOKING SECTION */}
+        {/* 5. CONTACT & BOOKING SECTION */}
         <section id="kontakt" className="space-y-10">
           <div className="max-w-2xl space-y-4">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -472,7 +400,7 @@ export default function Page() {
 
       </main>
 
-      {/* 7. FOOTER */}
+      {/* 6. FOOTER */}
       <footer className="border-t border-slate-800/80 mt-24 py-12 bg-[#05070c]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-400">
           <div className="space-y-1 text-center md:text-left">
