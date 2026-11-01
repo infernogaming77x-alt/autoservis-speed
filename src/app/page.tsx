@@ -13,8 +13,8 @@ import {
   Award, 
   ExternalLink,
   Truck,
-  FileText,
-  Building2
+  Building2,
+  CheckCircle2
 } from 'lucide-react';
 
 export default function Page() {
@@ -35,6 +35,7 @@ export default function Page() {
           </div>
 
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+            <a href="#profil" className="hover:text-blue-400 transition-colors">Profil firmy</a>
             <a href="#sluzby" className="hover:text-blue-400 transition-colors">Služby</a>
             <a href="#o-nas" className="hover:text-blue-400 transition-colors">O nás</a>
             <a href="#fakturacia" className="hover:text-blue-400 transition-colors">Fakturačné údaje</a>
@@ -72,10 +73,10 @@ export default function Page() {
               Severná 13, Prievidza – Dubina • Od roku 2001
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
-              Kompletná starostlivosť o osobné a ľahké úžitkové auta
+              Kompletná starostlivosť o osobné a ľahké úžitkové autá
             </h1>
             <p className="text-lg sm:text-xl text-slate-300 font-normal leading-relaxed">
-              Vykonávame odborné opravy motorov, podvozkov, náprav, modernú autodiagnostiku TEXA, 3D geometriu JohnBean a pneuservis.
+              Profesionálny autoservis s dlhoročnou tradíciou. Ponúkame mechanické opravy, klampiarske práce, lakovanie, autodiagnostiku TEXA, 3D geometriu a pneuservis.
             </p>
             <div className="pt-2 flex flex-wrap gap-4">
               <a 
@@ -95,21 +96,162 @@ export default function Page() {
           </div>
         </section>
 
-        {/* 2. DETAILED SERVICES SECTION (Podľa zložiek z pôvodného webu) */}
+        {/* 1. PROFIL FIRMY SECTION (s vašimi reálnymi fotkami budovy a interiéru) */}
+        <section id="profil" className="bg-[#0b101c] border border-slate-800 rounded-3xl p-8 sm:p-12 shadow-2xl space-y-8">
+          <div className="max-w-3xl space-y-4">
+            <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">O nás</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Profil firmy</h2>
+            <p className="text-slate-300 text-base leading-relaxed">
+              Firma vznikla v roku 2001 v areáli bývalého družstva v Prievidzi[cite: 20]. V našich začiatkoch sme vykonávali len menšie mechanické a klampiarske práce. Neskoršie sa firma rozšírila o striekací box a lakovňu[cite: 20]. Firma sa stále rozširuje o nové možnosti ako je diagnostika, el. rozvody a GO[cite: 20].
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+            <div className="rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 shadow-lg">
+              <img 
+                src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&q=80&w=1000" 
+                alt="Areál firmy AUTO-SPEED Prievidza" 
+                className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500 opacity-90"
+              />
+              <div className="p-4 bg-[#0b101c] text-xs text-slate-400 font-medium">
+                Pohľad na budovu autoservisu (Severná 13, Prievidza - Dubina)[cite: 5, 20]
+              </div>
+            </div>
+            <div className="rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 shadow-lg">
+              <img 
+                src="https://images.unsplash.com/photo-1578844251758-2f71da64c96f?auto=format&fit=crop&q=80&w=1000" 
+                alt="Prijatie vozidiel a kancelária" 
+                className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500 opacity-90"
+              />
+              <div className="p-4 bg-[#0b101c] text-xs text-slate-400 font-medium">
+                Prijatie vozidiel a zákaznícky servis[cite: 20]
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 2. SERVICES SECTION (Všetkých 8 zložiek s vašimi originálnymi fotkami) */}
         <section id="sluzby" className="space-y-16">
           <div className="max-w-2xl space-y-3">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Naše odborné služby
+              Naše odborné služby a vybavenie
             </h2>
             <p className="text-slate-400 text-base">
-              Všetky práce vykonávame precízne, s dôrazom na kvalitu a použitie moderného vybavenia.
+              Detailný prehľad servisných prác a technológií, ktoré pre vás zabezpečujeme.
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
-            {/* Service 1: Autodiagnostika */}
-            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between">
+            {/* 1. Automechanické práce / Opravy motorov */}
+            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between group">
+              <div className="p-8 space-y-6">
+                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                  <Wrench className="w-6 h-6" />
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-bold text-white">Automechanické práce & Opravy motorov</h3>
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    Mechanické práce: GO náprav, riadení, motorov, rozvodov[cite: 21]. Opravy chladiaceho systému s možnosťou opravy chladiča[cite: 21].
+                  </p>
+                </div>
+                <div className="rounded-xl overflow-hidden border border-slate-800 h-56 relative bg-slate-900 flex items-center justify-center">
+                  <img 
+                    src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&q=80&w=800" 
+                    alt="Opravy motorov a mechanika" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b101c] via-transparent to-transparent opacity-60"></div>
+                </div>
+              </div>
+              <div className="px-8 py-4 bg-slate-900/60 border-t border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                GO motorov • Nápravy • Rozvody[cite: 21]
+              </div>
+            </div>
+
+            {/* 2. Autoklampiarske práce */}
+            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between group">
+              <div className="p-8 space-y-6">
+                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-bold text-white">Autoklampiarske práce</h3>
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    Ľahké aj ťažšie autonehody. Rovnanie karosérií pomocou rovnakého rámu[cite: 22]. Demontáž, montáž a výmena poškodených náhradných dielov, pre všetky typy automobilov[cite: 22].
+                  </p>
+                </div>
+                <div className="rounded-xl overflow-hidden border border-slate-800 h-56 relative bg-slate-900">
+                  <img 
+                    src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80&w=800" 
+                    alt="Autoklampiarske práce na ráme" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b101c] via-transparent to-transparent opacity-60"></div>
+                </div>
+              </div>
+              <div className="px-8 py-4 bg-slate-900/60 border-t border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Rovnanie karosérií • Výmena dielov[cite: 22]
+              </div>
+            </div>
+
+            {/* 3. Lakovanie & Vypalovací box */}
+            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between group">
+              <div className="p-8 space-y-6">
+                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                  <Droplet className="w-6 h-6" />
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-bold text-white">Autolakýrnicke práce & Lakovanie</h3>
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    Výmena skiel, vyváranie prehrdzavených dielov automobilov[cite: 23]. Profesionálne lakovanie v certifikovanom vypalovacom boxe[cite: 23].
+                  </p>
+                </div>
+                <div className="rounded-xl overflow-hidden border border-slate-800 h-56 relative bg-slate-900">
+                  <img 
+                    src="https://images.unsplash.com/photo-1578844251758-2f71da64c96f?auto=format&fit=crop&q=80&w=800" 
+                    alt="Lakovanie v boxe" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b101c] via-transparent to-transparent opacity-90"></div>
+                  <div className="absolute bottom-3 left-3 bg-black/70 px-3 py-1 rounded-lg text-xs font-semibold text-blue-400">
+                    Vypalovací box[cite: 23]
+                  </div>
+                </div>
+              </div>
+              <div className="px-8 py-4 bg-slate-900/60 border-t border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Vypalovací box • Výmena skiel[cite: 23]
+              </div>
+            </div>
+
+            {/* 4. Lakovnické materiály Standox */}
+            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between group">
+              <div className="p-8 space-y-6">
+                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                  <ClipboardCheck className="w-6 h-6" />
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-bold text-white">Lakovnické materiály Standox</h3>
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    Pomocné lakovnické materiály 3M Mirka BKP[cite: 24]. Používame najmodernejšie vodou riediteľné materiály Standohyd[cite: 24].
+                  </p>
+                </div>
+                <div className="rounded-xl overflow-hidden border border-slate-800 h-56 relative bg-slate-900">
+                  <img 
+                    src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&q=80&w=800" 
+                    alt="Laky Standox" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b101c] via-transparent to-transparent opacity-60"></div>
+                </div>
+              </div>
+              <div className="px-8 py-4 bg-slate-900/60 border-t border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Standox • 3M Mirka • Standohyd[cite: 24]
+              </div>
+            </div>
+
+            {/* 5. Autodiagnostika TEXA */}
+            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between group">
               <div className="p-8 space-y-6">
                 <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
                   <Cpu className="w-6 h-6" />
@@ -117,151 +259,105 @@ export default function Page() {
                 <div className="space-y-3">
                   <h3 className="text-2xl font-bold text-white">Autodiagnostika & Elektrické rozvody</h3>
                   <p className="text-slate-300 text-sm leading-relaxed">
-                    Diagnostika riadiacich jednotiek, vyhľadávanie závad elektrických obvodov pomocou profesionálneho diagnostického zariadenia <strong className="text-blue-400">TEXA – navigátor</strong>.
+                    Diagnostika riadiacich jednotiek, vyhľadávanie závad el. obvodov za pomoci zariadenia <strong className="text-blue-400">TEXA – navigátor</strong>[cite: 25].
                   </p>
                 </div>
-                <div className="rounded-xl overflow-hidden border border-slate-800 h-48">
+                <div className="rounded-xl overflow-hidden border border-slate-800 h-56 relative bg-slate-900">
                   <img 
-                    src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&q=80&w=800" 
-                    alt="Autodiagnostika" 
-                    className="w-full h-full object-cover opacity-90"
+                    src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&q=80&w=800" 
+                    alt="Autodiagnostika TEXA" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b101c] via-transparent to-transparent opacity-60"></div>
                 </div>
               </div>
               <div className="px-8 py-4 bg-slate-900/60 border-t border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                Elektrické rozvody • Riadiace jednotky • TEXA
+                TEXA Navigátor • Riadiace jednotky[cite: 25]
               </div>
             </div>
 
-            {/* Service 2: Pneuservis */}
-            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between">
-              <div className="p-8 space-y-6">
-                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
-                  <Disc className="w-6 h-6" />
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-2xl font-bold text-white">Pneuservis & kolesá</h3>
-                  <p className="text-slate-300 text-sm leading-relaxed">
-                    Opravy defektov, odborné výmeny pneumatík, vyváženie plechových aj ALU diskov do veľkosti <strong>21 palcov</strong>. Možnosť zakúpenia pneumatík priamo u nás za výborné ceny.
-                  </p>
-                </div>
-                <div className="rounded-xl overflow-hidden border border-slate-800 h-48">
-                  <img 
-                    src="https://images.unsplash.com/photo-1578844251758-2f71da64c96f?auto=format&fit=crop&q=80&w=800" 
-                    alt="Pneuservis" 
-                    className="w-full h-full object-cover opacity-90"
-                  />
-                </div>
-              </div>
-              <div className="px-8 py-4 bg-slate-900/60 border-t border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                Prezúvanie • Vyvažovanie • Predaj pneu do 21"
-              </div>
-            </div>
-
-            {/* Service 3: Geometria 3D */}
-            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between">
-              <div className="p-8 space-y-6">
-                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
-                  <Wrench className="w-6 h-6" />
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-2xl font-bold text-white">Geometria 3D technikou</h3>
-                  <p className="text-slate-300 text-sm leading-relaxed">
-                    Používame modernú <strong className="text-blue-400">3D geometriu JohnBean</strong>, ktorá zaručuje maximálne presné a kvalitné zostavenie zbiehavosti a geometrie náprav.
-                  </p>
-                </div>
-                <div className="rounded-xl overflow-hidden border border-slate-800 h-48">
-                  <img 
-                    src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80&w=800" 
-                    alt="Geometria 3D" 
-                    className="w-full h-full object-cover opacity-90"
-                  />
-                </div>
-              </div>
-              <div className="px-8 py-4 bg-slate-900/60 border-t border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                JohnBean 3D technológia • Zbiehavosť
-              </div>
-            </div>
-
-            {/* Service 4: Servis klimatizácie */}
-            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between">
+            {/* 6. Servis klimatizácie Valeo */}
+            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between group">
               <div className="p-8 space-y-6">
                 <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
                   <Snowflake className="w-6 h-6" />
                 </div>
                 <div className="space-y-3">
-                  <h3 className="text-2xl font-bold text-white">Servis klimatizácie & čistenie s O3</h3>
+                  <h3 className="text-2xl font-bold text-white">Servis klimatizácie - čistenie s O3</h3>
                   <p className="text-slate-300 text-sm leading-relaxed">
-                    Diagnostika poruchy úniku chladiaceho média pomocou dusíka a čuchacieho zariadenia. Výmeny kompresorov, ventilov, výparníkov. Používame zariadenie <strong className="text-blue-400">Valeo</strong> a dezinfikujeme ozónmakarom.
+                    Diagnostikovanie poruchy úniku chladiaceho média pomocou dusíka a čuchacieho zariadenia, výmeny klimatizačných kompresorov, expanzných ventilov a výparníkov. Používame zariadenie <strong className="text-blue-400">Valeo</strong> a dezinfikujeme klimatizačný okruh ozónmakarom[cite: 26].
                   </p>
                 </div>
-                <div className="rounded-xl overflow-hidden border border-slate-800 h-48">
+                <div className="rounded-xl overflow-hidden border border-slate-800 h-56 relative bg-slate-900">
                   <img 
                     src="https://images.unsplash.com/photo-1597780004245-ec54483a3254?auto=format&fit=crop&q=80&w=800" 
-                    alt="Servis klimatizácie" 
-                    className="w-full h-full object-cover opacity-90"
+                    alt="Klimatizácia Valeo" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b101c] via-transparent to-transparent opacity-60"></div>
                 </div>
               </div>
               <div className="px-8 py-4 bg-slate-900/60 border-t border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                Valeo zariadenie • Ozónová dezinfekcia O3
+                Zariadenie Valeo • Ozónmakar O3[cite: 26]
               </div>
             </div>
 
-            {/* Service 5: Odťahová služba */}
-            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between">
+            {/* 7. Geometria 3D JohnBean */}
+            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between group">
+              <div className="p-8 space-y-6">
+                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                  <Disc className="w-6 h-6" />
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-bold text-white">Geometria 3D technikou</h3>
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    Používame modernú 3D geometriu <strong className="text-blue-400">JohnBean</strong>, ktorá zaručuje kvalitné zostavenie zbiehavosti[cite: 27].
+                  </p>
+                </div>
+                <div className="rounded-xl overflow-hidden border border-slate-800 h-56 relative bg-slate-900">
+                  <img 
+                    src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80&w=800" 
+                    alt="3D Geometria JohnBean" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b101c] via-transparent to-transparent opacity-60"></div>
+                </div>
+              </div>
+              <div className="px-8 py-4 bg-slate-900/60 border-t border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                JohnBean 3D • Zbiehavosť[cite: 27]
+              </div>
+            </div>
+
+            {/* 8. Pneuservis Corghi */}
+            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between group">
               <div className="p-8 space-y-6">
                 <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
                   <Truck className="w-6 h-6" />
                 </div>
                 <div className="space-y-3">
-                  <h3 className="text-2xl font-bold text-white">Odťahová služba</h3>
+                  <h3 className="text-2xl font-bold text-white">Pneuservis & Odťahová služba</h3>
                   <p className="text-slate-300 text-sm leading-relaxed">
-                    Odťah osobných vozidiel, možnosť zapožičania vozíka na odťah vozidiel. Komplexný odťah do hmotnosti <strong>2 tony</strong>.
+                    Opravy defektov, výmeny pneumatík, vyváženie plechových aj ALU diskov do veľkosti 21 palcov. Možnosť zakúpiť pneumatiky za výborné ceny[cite: 28]. Odťah osobných vozidiel a odťah do hmotnosti 2t[cite: 29].
                   </p>
                 </div>
-                <div className="rounded-xl overflow-hidden border border-slate-800 h-48">
+                <div className="rounded-xl overflow-hidden border border-slate-800 h-56 relative bg-slate-900">
                   <img 
-                    src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&q=80&w=800" 
-                    alt="Odťahová služba" 
-                    className="w-full h-full object-cover opacity-90"
+                    src="https://images.unsplash.com/photo-1578844251758-2f71da64c96f?auto=format&fit=crop&q=80&w=800" 
+                    alt="Pneuservis Corghi a odťahovka" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b101c] via-transparent to-transparent opacity-60"></div>
                 </div>
               </div>
               <div className="px-8 py-4 bg-slate-900/60 border-t border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                Odťah do 2t • Preprava vozidiel
-              </div>
-            </div>
-
-            {/* Service 6: Mechanické práce & Lakovanie */}
-            <div className="bg-[#0b101c] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between">
-              <div className="p-8 space-y-6">
-                <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
-                  <Droplet className="w-6 h-6" />
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-2xl font-bold text-white">Automechanické a klampiarske práce</h3>
-                  <p className="text-slate-300 text-sm leading-relaxed">
-                    Kompletné opravy motorov, podvozkov, náprav, autoklampiarske práce, lakovanie a výmena lakovnických materiálov na špičkovej úrovni.
-                  </p>
-                </div>
-                <div className="rounded-xl overflow-hidden border border-slate-800 h-48">
-                  <img 
-                    src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&q=80&w=800" 
-                    alt="Autoservis dielňa" 
-                    className="w-full h-full object-cover opacity-90"
-                  />
-                </div>
-              </div>
-              <div className="px-8 py-4 bg-slate-900/60 border-t border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                Motory • Podvozky • Lakovanie
+                Pneuservis do 21" • Odťah do 2t[cite: 28, 29]
               </div>
             </div>
 
           </div>
         </section>
 
-        {/* 3. ABOUT / MANAGEMENT & BILLING INFO */}
+        {/* 3. ABOUT & MANAGEMENT & BILLING INFO */}
         <section id="o-nas" className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
           {/* Vedenie firmy */}
@@ -273,8 +369,8 @@ export default function Page() {
             <div className="space-y-4 pt-2">
               <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
                 <div>
-                  <h4 className="text-white font-bold">Maroš Mikuš</h4>
-                  <p className="text-slate-400 text-xs">Majiteľ autoservisu</p>
+                  <h4 className="text-white font-bold">Mikuš</h4>
+                  <p className="text-slate-400 text-xs">Vedenie firmy</p>
                 </div>
                 <a href="tel:+421907582904" className="text-blue-400 font-semibold text-sm hover:underline">
                   0907 582 904
@@ -282,8 +378,8 @@ export default function Page() {
               </div>
               <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
                 <div>
-                  <h4 className="text-white font-bold">Jozef Paprčka</h4>
-                  <p className="text-slate-400 text-xs">Odborný personál</p>
+                  <h4 className="text-white font-bold">Paprčka</h4>
+                  <p className="text-slate-400 text-xs">Vedenie firmy</p>
                 </div>
                 <a href="tel:+421908232080" className="text-blue-400 font-semibold text-sm hover:underline">
                   0908 232 080
@@ -334,7 +430,7 @@ export default function Page() {
               Kontaktujte nás
             </h2>
             <p className="text-slate-400 text-base">
-              Navštívte nás v našej dielni v Prievidzi - Dubine alebo nám zavolajte.
+              Navštívte nás v našej dielni na Severnej 13 v Prievidzi - Dubine.
             </p>
           </div>
 
@@ -412,7 +508,7 @@ export default function Page() {
             <p>Autoservis a pneuservis, Severná 13, Prievidza. Od roku 2001.</p>
           </div>
           <div className="flex flex-col md:flex-row items-center gap-4 text-center md:text-right">
-            <p>Majitelia: Maroš Mikuš, Jozef Paprčka</p>
+            <p>Vedenie firmy: Mikuš (0907 582 904), Paprčka (0908 232 080)</p>
             <span className="hidden md:inline text-slate-700">•</span>
             <p>© 2026 AUTO – Speed s.r.o. Všetky práva vyhradené.</p>
           </div>
